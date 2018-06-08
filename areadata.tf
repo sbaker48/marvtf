@@ -1,3 +1,4 @@
+/loaded marvtf/areadata.tf
 
 /def -i load_area_data = \
     /let f=%;\
@@ -7,7 +8,7 @@
     /let xcoord=%;\
     /let ycoord=%;\
     /let alias=%;\
-    /test f := tfopen("areas.csv","r")%;\
+    /test f := tfopen("marvtf/areas.csv","r")%;\
     /while (tfread(f, line) >= 0) \
         /if (regmatch("^([A-Za-z_]*),([A-Za-z_]*),([0-9]*),([0-9]*),([A-Za-z_]*)", line)) \
 	    /test name := {P1}%;\
@@ -24,3 +25,4 @@
     /done%;\
     /test tfclose(f)
 
+/load_area_data

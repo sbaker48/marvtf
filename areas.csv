@@ -43,7 +43,7 @@ race_ogre,deso,179,360,
 race_shadow,deso,341,106,
 race_skeleton,deso,152,473,
 ranger_deso,deso,296,288,
-reavers,deso,164,435,
+reavers,deso,164,435,reaver
 red_tides,deso,27,77,
 seabird_inn,deso,328,328,
 seashore_tower,deso,278,35,
@@ -314,7 +314,7 @@ st_patrics_abbey,renardy,20,21,abbey
 abandoned_study,roth,213,124,
 ackbar,roth,346,296,
 aldors,roth,84,112,
-amberly,roth,220,345,
+amberley,roth,220,345,
 anaconda_ruins,roth,332,405,
 attic,roth,340,398,
 barbarian,roth,370,244,barb

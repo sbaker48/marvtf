@@ -1,3 +1,4 @@
+/loaded marvtf/whereami.tf
 
 /set room=unknown
 /set area=unknown

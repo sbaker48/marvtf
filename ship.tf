@@ -1,82 +1,61 @@
-/require areadata.tf
-/require whereami.tf
+/loaded marvtf/ship.tf
+/require marvtf/whereami.tf
+/require marvtf/areadata.tf
 
-/load_area_data
+/set shipname=binkley
 
 /def -i -F -t'David tells you \'Bringin\' tha ship to a halt.\'' ship_halt = /repeat -1 1 view;whereami
 /def -i -F -t'David tells you \'Comin\' to a stop, *' ship_stop = /repeat -1 1 view;whereami
 /def -i -F -t'Victor tells you \'I am sorry, *, but I don\'t know where * is\\!\'' ship_fail = /repeat -1 1 view;whereami
-/def -i -F -t'David tells you \'We\'ve arr\'ved at signal, *' ship_arrive = /repeat -1 1 rescue binkley
+/def -i -F -t'David tells you \'We\'ve arr\'ved at signal, *' ship_arrive = /repeat -1 1 rescue %{shipname}
 
 /def -i -F -t'The crew rescue you!' ship_rescue = whereami%;/repeat -1 1 console info condition
-/def -i -F -t'There is a ripple in space, and after a moment, the ship Binkley appears.' ship_summon = whereami%;/repeat -1 1 console info condition
+/def -i -F -t'There is a ripple in space, and after a moment, the ship * appears.' ship_summon = whereami%;/repeat -1 1 console info condition
 
 /def -i -t'David tells you \'All repairs finish\'d, *' ship_repair_done = /repeat -3 1 sailor gangway raise
 /def -i -t'David tells you \'Your hull is already fully repaired\\!\'' ship_repair_none = /repeat -3 1 sailor gangway raise
 
 
-/def -i sellall = \
-    /let curloc=%;\
-    /test curloc := get_cur_loc()%;\
-    /eval d;get all scroll;get all coins;u%;\
-    /if (curloc =~ "lorenchia_harbor") \
-        /eval _START;shipout e;3 e;2 E;e;3 ne;2 e;n;manifest binkley%;\
-        /eval y%;\
-        /eval s;9 e;n;manifest binkley%;\
-        /eval y%;\
-        /eval s;w;sw;s;sw;w;n;manifest binkley%;\
-        /eval y%;\
-        /eval s;14 w;n;deposit change;s;W;3 w;binkley;_FINISH%;\
-    /elseif (curloc =~ "shadowkeep_harbor") \
-        /eval _START;shipout n;n;3 e;3 n;2 w;s;manifest binkley%;\
-        /eval y%;\
-        /eval n;2 w;n;w;manifest binkley%;\
-        /eval y%;\
-        /eval e;3 n;2 w;s;manifest binkley%;\
-        /eval y%;\
-        /eval n;2 e;4 s;w;s;deposit change;n;w;3 s;3 e;s;binkley;_FINISH%;\
-    /elseif (curloc =~ "deso_ferry") \
-        /eval _START;shipout w;4 w;n;manifest binkley%;\
-        /eval y%;\
-        /eval s;2 w;n;manifest binkley%;\
-        /eval y%;\
-        /eval s;w;s;w;manifest binkley%;\
-        /eval y%;\
-        /eval e;n;7 e;binkley;_FINISH%;\
-    /elseif (curloc =~ "furn_ferry") \
-        /eval _START;shipout e;3 s;2 se;14 e;E;E;6 s;e;manifest binkley%;\
-        /eval y%;\
-        /eval w;3 sw;s;e;manifest binkley%;\
-        /eval y%;\
-        /eval w;2 nw;4 w;s;manifest binkley%;\
-        /eval y%;\
-        /eval n;N;W;6 w;3 nw;3 n;w;deposit change;e;6 s;W;6 w;2 nw;3 n;binkley;_FINISH%;\
-    /elseif (curloc =~ "rsf") \
-        /eval _START;shipout s;2 w;3 s;manifest binkley%;\
-        /eval y%;\
-        /eval 3 n;e;manifest binkley%;\
-        /eval y%;\
-        /eval 2 e;manifest binkley%;\
-        /eval y%;\
-        /eval e;s;manifest binkley%;\
-        /eval y%;\
-        /eval n;deposit change;2 w;binkley;_FINISH%;\
-    /else \
-        /echo -aBCYellow Unknown location for sellall%;\
-    /endif
-
-
-; TODO triger on WHEREAMI, look for area=Binkley (ship)
-; move if room="lounge" or "cargo hold", etc
 /def -i sail = \
-    /def -n1 -t'SHIP_LAUNCH_DONE' launch_done = /repeat -1 1 /sail2 %*%;\
-    /launch
+    /def -n1 -t'HELM' helm_done = /sail2 %*%;\
+    /move_to_helm
 
 /def -i sail2 = \
+    /def -n1 -t'LAUNCH' launch_done = /sail3 %*%;\
+    /launch
+
+/def -i sail3 = \
     /set ship_run_dirs=%;\
     /build_path %{1}%;\
     /eval /echo -aBCYellow %{ship_run_dirs}%;\
     /eval %{ship_run_dirs}
+
+
+/def -i move_to_helm = \
+    /def -n1 -t'WHEREAMI' = /move_to_helm2%;\
+    whereami
+
+/def -i move_to_helm2 = \
+    /if ( substr({area},strlen({area})-6,6) !~ "(ship)" ) \
+        /echo #####  NOT ON SHIP!  #####%;\
+    /elseif ( ({room} =~ "main deck") | (substr({room},0,11) =~ "(main deck)") ) \
+        3 gagoutput aft%;\
+    /elseif ( {room} =~ "cargo hold" ) \
+        5 gagoutput aft;u%;\
+    /elseif ( {room} =~ "captain's cabin" ) \
+        deck%;\
+    /elseif ( {room} =~ "lounge" ) \
+        deck;2 aft%;\
+    /elseif ( {room} =~ "teleportation room" ) \
+        d;2 aft%;\
+    /elseif ( {room} =~ "galley" ) \
+        deck;aft%;\
+    /elseif ( {room} =~ "crow's nest" ) \
+        d;aft%;\
+    /else \
+        /echo #####  unknown location on ship  %{room}%;\
+    /endif%;\
+    /trigger HELM
 
 /def -i launch = \
     /let ship_launch_dirs=%;\
@@ -86,13 +65,14 @@
     /if (ship_launch_dirs !~ "") \
         /eval /echo -aBCYellow sail %{ship_launch_dirs}%;\
         ship launch%;\
-        /def -n1 -t'*Done sailin*' sail_trig = /eval view;whereami%%;/trigger SHIP_LAUNCH_DONE%;\
+        /def -n1 -t'*Done sailin*' sail_trig = /eval view;whereami%%;/trigger LAUNCH%;\
         /eval sail %{ship_launch_dirs}%;\
     /else \
         ship launch%;\
-        /trigger SHIP_LAUNCH_DONE%;\
+        /trigger LAUNCH%;\
     /endif%;\
 
+; TODO:
 ; /def -i cont_switch
 ; /def -i nav_to_label
 ; /def -i nav_to_coords
@@ -169,7 +149,7 @@
     /elseif (gcoord_x == 7970 & gcoord_y == 10687) /let curloc=lorenchia_harbor%;\
     /elseif (gcoord_x == 9726 & gcoord_y ==  7205) /let curloc=shadowkeep_harbor%;\
     /elseif (gcoord_x == 8097 & gcoord_y == 10775) /let curloc=silverlake%;\
-    /elseif (gcoord_x == 9651 & gcoord_y ==  7186) /let curloc=crab%;\
+    /elseif (gcoord_x == 9651 & gcoord_y ==  7186) /let curloc=crabfroth%;\
     /else /let curloc=xxx%;\
     /endif%;\
     /return {curloc}
@@ -191,28 +171,32 @@
     /return {cont}
 
 ; Directions to get out of harbors
-/set launch_rsf=2 n
 /set launch_luce_ferry=n
 /set launch_laen_ferry=nw
 /set launch_deso_ferry=e
 /set launch_roth_ferry=w
 /set launch_furn_ferry=w
+; TODO launch_arelium_harbor
 /set launch_lorenchia_harbor=sea
 /set launch_shadowkeep_harbor=river
 /set launch_silverlake=2 n
-/set launch_crab=2 w
+; pcity harbors
+/set launch_rsf=2 n
+/set launch_crabfroth=2 w
 
 ; Directions to get into harbors
-/set dock_rsf=2 *s
 /set dock_luce_ferry=2 *s
 /set dock_laen_ferry=2 *se
 /set dock_deso_ferry=2 *w
 /set dock_roth_ferry=5 *e
 /set dock_furn_ferry=2 *e
+; TODO dock_arelium_harbor
 /set dock_lorenchia_harbor=*e
 /set dock_shadowkeep_harbor=*n
 /set dock_silverlake=2 *s
-/set dock_crab=2 *e
+; pcity harbors
+/set dock_rsf=2 *s
+/set dock_crabfroth=2 *e
 
 
 ; inter-continential paths
@@ -249,9 +233,61 @@
 ; Set area continents for locations not in the area database (like pcities)
 /set areacont_sc=laen
 /set areacont_rsf=luce
-/set areacont_crab=roth
+/set areacont_crabfroth=roth
 
-;/set alias_crab=crab
+/set alias_crab=crabfroth
+
+
+/def -i sellall = \
+    /let curloc=%;\
+    /test curloc := get_cur_loc()%;\
+    /eval d;get all scroll;get all coins;u%;\
+    /if (curloc =~ "lorenchia_harbor") \
+        /eval _START;shipout e;3 e;2 E;e;3 ne;2 e;n;manifest %{shipname}%;\
+        /eval y%;\
+        /eval s;9 e;n;manifest %{shipname}%;\
+        /eval y%;\
+        /eval s;w;sw;s;sw;w;n;manifest %{shipname}%;\
+        /eval y%;\
+        /eval s;14 w;n;deposit change;s;W;3 w;%{shipname};_FINISH%;\
+    /elseif (curloc =~ "shadowkeep_harbor") \
+        /eval _START;shipout n;n;3 e;3 n;2 w;s;manifest %{shipname}%;\
+        /eval y%;\
+        /eval n;2 w;n;w;manifest %{shipname}%;\
+        /eval y%;\
+        /eval e;3 n;2 w;s;manifest %{shipname}%;\
+        /eval y%;\
+        /eval n;2 e;4 s;w;s;deposit change;n;w;3 s;3 e;s;%{shipname};_FINISH%;\
+    /elseif (curloc =~ "deso_ferry") \
+        /eval _START;shipout w;4 w;n;manifest %{shipname}%;\
+        /eval y%;\
+        /eval s;2 w;n;manifest %{shipname}%;\
+        /eval y%;\
+        /eval s;w;s;w;manifest %{shipname}%;\
+        /eval y%;\
+        /eval e;n;7 e;%{shipname};_FINISH%;\
+    /elseif (curloc =~ "furn_ferry") \
+        /eval _START;shipout e;3 s;2 se;14 e;E;E;6 s;e;manifest %{shipname}%;\
+        /eval y%;\
+        /eval w;3 sw;s;e;manifest %{shipname}%;\
+        /eval y%;\
+        /eval w;2 nw;4 w;s;manifest %{shipname}%;\
+        /eval y%;\
+        /eval n;N;W;6 w;3 nw;3 n;w;deposit change;e;6 s;W;6 w;2 nw;3 n;%{shipname};_FINISH%;\
+    /elseif (curloc =~ "rsf") \
+        /eval _START;shipout s;2 w;3 s;manifest %{shipname}%;\
+        /eval y%;\
+        /eval 3 n;e;manifest %{shipname}%;\
+        /eval y%;\
+        /eval 2 e;manifest %{shipname}%;\
+        /eval y%;\
+        /eval e;s;manifest %{shipname}%;\
+        /eval y%;\
+        /eval n;deposit change;2 w;%{shipname};_FINISH%;\
+    /else \
+        /echo -aBCYellow Unknown location for sellall%;\
+    /endif
+
 
 ; Display a list of areas that have been mapped
 /def -i areas = \
@@ -261,7 +297,8 @@
 /echo -aBCblue laen%;\
 /echo chessboard ivory_tower moonrind secladin winds vendace%;\
 /echo -aBCblue deso%;\
-/echo ancient_temple(laku) buckthorn burnvill last_unicorn(mnight) millies mythical pier sunderland twisted_tower(dale)%;\
+/echo ancient_temple(laku) buckthorn burnvill last_unicorn(mnight) millies mythical pier sunderland tarackia twisted_tower(dale)%;\
+/echo -aB aelena reavers%;\
 /echo -aBCblue roth%;\
 /echo aldors dojo doobies hill_giants lighthouse taiga%;\
 /echo -aBCblue furn%;\
