@@ -10,7 +10,7 @@
     /eval /set prot%%{prot_%{p}}=%%{1}%;\
     /eval /set do_prot%%{prot_%{p}}=%%{2}%;\
     /eval /set prot%%{prot_%{p}}_cmd=%%{-2}%;\
-    /def -t%{p}_UP on_%{p}_up = /reprot_continue
+    /def -i -t%{p}_UP on_%{p}_up = /reprot_continue
 
 /def -i proton = /eval -s0 /set do_prot%{1}=1%;/prots
 /def -i protoff = /eval -s0 /set do_prot%{1}=0%;/prots
