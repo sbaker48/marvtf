@@ -1,6 +1,31 @@
 /loaded marvtf/bat_prots.tf
 /require marvtf/bat_status.tf
 
+; Sets up a list of prots (or other effects), and can check and re-apply missing prots.
+;
+; Example usage:
+;
+;  /setupprot UNSTUN 1 cast unstun at me
+;  /setupprot BOT    0 cast blessing of tarmalen at me
+;  /setupprot FABS   0 get force_absorption from pack;drink flask
+;
+;  /prots
+;     - This will display the list of prots and show which are currently active
+;
+;  /reprot
+;     - This will apply all missing protections that are currently enabled
+;
+;  /protoff #
+;     - Disable the application of a prot
+;
+;  /proton #
+;     - Enable the application of a prot
+;
+
+; /setupprot name initial_state command
+;   name -  The status effect name (see bat_effects.tf and bat_status.tf)
+;   initial_state - 0=OFF, 1=ON 
+;   command - The command to apply the protection/effect
 /def -i setupprot = \
     /let p=%{1}%;\
     /if /test {prot_%{p}} == 0%; /then \
@@ -22,10 +47,10 @@
         {i}, 3,\
         {prot%%{i}}, 10,\
         "", 2,\
-        {do_prot%%{i}}=0 ?\
-            "[OFF]"         :\
-            hasstatus({prot%%{i}}) ?\
-                "@{Cgreen}[UP]@{n}"   :\
+        hasstatus({prot%%{i}})  ?\
+            "@{Cgreen}[UP]@{n}" :\
+            {do_prot%%{i}}=0 ?\
+                "[OFF]"      :\
                 "@{Cred}[DOWN]@{n}", -18,\
         "", 1), "B", 1)%;\
     /echo #############
