@@ -288,19 +288,3 @@
         /echo -aBCYellow Unknown location for sellall%;\
     /endif
 
-
-; Display a list of areas that have been mapped
-/def -i areas = \
-/echo%;\
-/echo -aBCblue luce%;\
-/echo adachain anthill beach cat dahbec duz fraggle jondalars lanzia mirror_mine oasis pyramid silverlake towers underdark votk zebells%;\
-/echo -aBCblue laen%;\
-/echo chessboard ivory_tower moonrind secladin winds vendace%;\
-/echo -aBCblue deso%;\
-/echo ancient_temple(laku) buckthorn burnvill last_unicorn(mnight) millies mythical pier sunderland tarackia twisted_tower(dale)%;\
-/echo -aB aelena reavers%;\
-/echo -aBCblue roth%;\
-/echo aldors dojo doobies hill_giants lighthouse taiga%;\
-/echo -aBCblue furn%;\
-/echo brantis firefox ikar necromancer old_fort plakhstan rillion samurai savage_jungle(hannes) twisted_prophecies volcano%;\
-/echo
