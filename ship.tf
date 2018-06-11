@@ -149,6 +149,7 @@
     /elseif (gcoord_x == 7970 & gcoord_y == 10687) /let curloc=lorenchia_harbor%;\
     /elseif (gcoord_x == 9726 & gcoord_y ==  7205) /let curloc=shadowkeep_harbor%;\
     /elseif (gcoord_x == 8097 & gcoord_y == 10775) /let curloc=silverlake%;\
+    /elseif (gcoord_x == 7998 & gcoord_y == 10814) /let curloc=oystria%;\
     /elseif (gcoord_x == 9651 & gcoord_y ==  7186) /let curloc=crabfroth%;\
     /else /let curloc=xxx%;\
     /endif%;\
@@ -176,7 +177,6 @@
 /set launch_deso_ferry=e
 /set launch_roth_ferry=w
 /set launch_furn_ferry=w
-; TODO launch_arelium_harbor
 /set launch_lorenchia_harbor=sea
 /set launch_shadowkeep_harbor=river
 /set launch_silverlake=2 n
@@ -190,14 +190,13 @@
 /set dock_deso_ferry=2 *w
 /set dock_roth_ferry=5 *e
 /set dock_furn_ferry=2 *e
-; TODO dock_arelium_harbor
 /set dock_lorenchia_harbor=*e
 /set dock_shadowkeep_harbor=*n
 /set dock_silverlake=2 *s
+/set dock_oystria=*whirlpool
 ; pcity harbors
 /set dock_rsf=2 *s
 /set dock_crabfroth=2 *e
-
 
 ; inter-continential paths
 /set luce_deso=wpt_lucentium1,wpt_desolathya-lucentium2,wpt_desolathya-lucentium1,wpt_desolathya3,wpt_windhamkeep
@@ -234,48 +233,48 @@
 /set areacont_sc=laen
 /set areacont_rsf=luce
 /set areacont_crabfroth=roth
-
 /set alias_crab=crabfroth
 
 
 /def -i sellall = \
     /let curloc=%;\
     /test curloc := get_cur_loc()%;\
-    /eval d;get all scroll;get all coins;u%;\
+    /eval d;get all coins;u%;\
+    /eval gagoutput set look_on_move off%;\
     /if (curloc =~ "lorenchia_harbor") \
-        /eval _START;shipout e;3 e;2 E;e;3 ne;2 e;n;manifest %{shipname}%;\
+        /eval shipout e;3 e;2 E;e;3 ne;2 e;n;manifest %{shipname}%;\
         /eval y%;\
         /eval s;9 e;n;manifest %{shipname}%;\
         /eval y%;\
         /eval s;w;sw;s;sw;w;n;manifest %{shipname}%;\
         /eval y%;\
-        /eval s;14 w;n;deposit change;s;W;3 w;%{shipname};_FINISH%;\
+        /eval s;14 w;n;deposit change;s;W;3 w;%{shipname}%;\
     /elseif (curloc =~ "shadowkeep_harbor") \
-        /eval _START;shipout n;n;3 e;3 n;2 w;s;manifest %{shipname}%;\
+        /eval shipout n;n;3 e;3 n;2 w;s;manifest %{shipname}%;\
         /eval y%;\
         /eval n;2 w;n;w;manifest %{shipname}%;\
         /eval y%;\
         /eval e;3 n;2 w;s;manifest %{shipname}%;\
         /eval y%;\
-        /eval n;2 e;4 s;w;s;deposit change;n;w;3 s;3 e;s;%{shipname};_FINISH%;\
+        /eval n;2 e;4 s;w;s;deposit change;n;w;3 s;3 e;s;%{shipname}%;\
     /elseif (curloc =~ "deso_ferry") \
-        /eval _START;shipout w;4 w;n;manifest %{shipname}%;\
+        /eval shipout w;4 w;n;manifest %{shipname}%;\
         /eval y%;\
         /eval s;2 w;n;manifest %{shipname}%;\
         /eval y%;\
         /eval s;w;s;w;manifest %{shipname}%;\
         /eval y%;\
-        /eval e;n;7 e;%{shipname};_FINISH%;\
+        /eval e;n;7 e;%{shipname}%;\
     /elseif (curloc =~ "furn_ferry") \
-        /eval _START;shipout e;3 s;2 se;14 e;E;E;6 s;e;manifest %{shipname}%;\
+        /eval shipout e;3 s;2 se;14 e;E;E;6 s;e;manifest %{shipname}%;\
         /eval y%;\
         /eval w;3 sw;s;e;manifest %{shipname}%;\
         /eval y%;\
         /eval w;2 nw;4 w;s;manifest %{shipname}%;\
         /eval y%;\
-        /eval n;N;W;6 w;3 nw;3 n;w;deposit change;e;6 s;W;6 w;2 nw;3 n;%{shipname};_FINISH%;\
+        /eval n;N;W;6 w;3 nw;3 n;w;deposit change;e;6 s;W;6 w;2 nw;3 n;%{shipname}%;\
     /elseif (curloc =~ "rsf") \
-        /eval _START;shipout s;2 w;3 s;manifest %{shipname}%;\
+        /eval shipout s;2 w;3 s;manifest %{shipname}%;\
         /eval y%;\
         /eval 3 n;e;manifest %{shipname}%;\
         /eval y%;\
@@ -283,8 +282,8 @@
         /eval y%;\
         /eval e;s;manifest %{shipname}%;\
         /eval y%;\
-        /eval n;deposit change;2 w;%{shipname};_FINISH%;\
+        /eval n;deposit change;2 w;%{shipname}%;\
     /else \
         /echo -aBCYellow Unknown location for sellall%;\
-    /endif
-
+    /endif%;\
+    /eval gagoutput set look_on_move on
