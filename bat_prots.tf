@@ -72,5 +72,5 @@
 	/trigger READY%;\
     /endif
 
-/def -i reprot_continue = /if ( {do_reprot} = 1 ) /repeat -3 1 /reprot%;/else show effects%;/endif
+/def -i reprot_continue = /if ( {do_reprot} = 1 ) /repeat -3 1 /reprot%;/endif
 

@@ -8,7 +8,7 @@
 ;
 ; Current stats are set by the prompt/sc output (see below)
 ; Current skill/spell are set whenever you use skills or cast spells (also see below)
-; 
+;
 ; The current status fields are set by your other triggers.
 ;   /addstatus FOO           - Adds FOO to the status effects field, in the default color (status_effects_color)
 ;   /addstatus FOO green     - Adds a status effect in a different color. Valid colors are: black, red, green, yellow, blue, magenta, cyan, white
@@ -37,12 +37,14 @@
     /endif%;\
     /let x=$[ replace( ":", "_", {1} ) ]%;\
     /if /test {flag_%{x}} == 1%; /then \
-        /rmstatus %{x}%;\
-    /endif%;\
-    /eval /set status_%{x}=%{1}%;\
-    /eval /status_add -Blast status_%{x}:$[ strlen({1}) ]:BC%{stcolor}%;\
-    /eval /set flag_%{x}=1%;\
-    /trigger %{x}_UP
+        /eval /status_rm status_%{x}%;\
+        /eval /status_add -Blast status_%{x}:$[ strlen({1}) ]:BC%{stcolor}%;\
+    /else \
+        /eval /set status_%{x}=%{1}%;\
+        /eval /status_add -Blast status_%{x}:$[ strlen({1}) ]:BC%{stcolor}%;\
+        /eval /set flag_%{x}=1%;\
+        /trigger %{x}_UP%;\
+    /endif
 
 /def -i rmstatus = \
     /let x=$[ replace( ":", "_", {1} ) ]%;\

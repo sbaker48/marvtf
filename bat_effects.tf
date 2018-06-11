@@ -85,11 +85,35 @@
 
 /def -i -t'You sit down and start meditating.' med1 = /addstatus MED%;/repeat -360 1 /rmstatus MED
 
-/def -i -F -t'| Unstun         * | For now    * |' unstun_status = /addstatus UNSTUN
-/def -i check_unstun = grep -q "Unstun" show effects
+
+; Unstun handling
+
+/set unstun_pid=0
+/def -i check_unstun = \
+    /eval /set unstun_pid=$[repeat("-3 1 /unstun_down")]%;\
+    grep -q "Unstun" show effects
+
+/def -i -F -t'| Unstun         * | For now    * |' unstun_status = /unstun_up
+
+/def -i unstun_up = \
+    /if ( !hasstatus("UNSTUN") ) \
+        /addstatus UNSTUN%;\
+        party report Unstun up%;\
+        /if ( {unstun_pid} > 0 )\
+            /kill %{unstun_pid}%;\
+        /endif%;\
+    /endif
+
+/def -i unstun_down = \
+    /if ( hasstatus("UNSTUN") ) \
+        /rmstatus UNSTUN%;\
+        party report Unstun DOWN!%;\
+    /endif
+
 /def -i -F -aBCYellow -t'* chanting appears to do absolutely nothing.' unstun1 = /check_unstun
 /def -i -F -aBCYellow -t'It doesn\'t hurt as much as it normally does!' unstun2 = /check_unstun
 /def -i -F -aBCYellow -t'It doesn\'t hurt at all!' unstun3 = /check_unstun
+
 
 ; Floating disc timer
 
@@ -107,7 +131,7 @@
         /rmstatus DISC:%{i1}%;\
         /if ( {disc_time} >= 0 ) \
             /addstatus DISC:%{disc_time}%;\
-            /eval /set disc_pid=$[repeat(strcat("-0:01:00 1 /disc_time_update ",{i2}))]%;\
+            /eval /set disc_pid=$[repeat(strcat("-60 1 /disc_time_update ",{i2}))]%;\
         /else \
             /set disc_pid=0%;\
         /endif%;\
