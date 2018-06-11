@@ -99,9 +99,10 @@
     /if ( !hasstatus("UNSTUN") ) \
         /addstatus UNSTUN%;\
         party report Unstun up%;\
-        /if ( {unstun_pid} > 0 )\
-            /kill %{unstun_pid}%;\
-        /endif%;\
+    /endif%;\
+    /if ( {unstun_pid} > 0 )\
+        /kill %{unstun_pid}%;\
+	/set unstun_pid=0%;\
     /endif
 
 /def -i unstun_down = \
