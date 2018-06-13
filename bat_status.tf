@@ -83,8 +83,8 @@
 
 ;##### fill skill/spell field
 
-/def -i -F -p8 -t'You start chanting.' spell_start = cast info
-/def -i -F -p8 -t'You start concentrating on the skill.' skill_start = cast info
+/def -i -F -p8 -t'You start chanting.' spell_start = @@cast info
+/def -i -F -p8 -t'You start concentrating on the skill.' skill_start = @@cast info
 
 /def -i -F -ag -p8 -mregexp -t'^You are casting \'(.+)\'\.$' cmdstatus1 = /set statuscmd=cast '%P1'
 /def -i -F -ag -p8 -mregexp -t'^You are using \'(.+)\'\.$' cmdstatus2 = /set statuscmd=use '%P1'
