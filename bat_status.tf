@@ -15,18 +15,24 @@
 ;   /rmstatus FOO            - Removes the FOO status field
 ;   hasstatus("FOO")         - Can be used by other triggers to check if a status message is currently set
 
+; Configurable parameters for the status line. Set these in your .tfrc (or wherever) to customize the colors of the status line.
 /set status_stats_color=white
+/set status_stats_attr=B
 /set status_command_color=cyan
+/set status_command_attr=B
 /set status_effects_color=yellow
+/set status_effects_attr=B
+
+
 
 /set warn_status=off
-/eval /set status_fields=@more:1:Br :1 statusstats:45:BC%{status_stats_color} :2 statuscmd::BC%{status_command_color} :1 last:1
-/set status_stats_width=45
+/set status_stats_width=10
+/eval /set status_fields=@more:1:Br :1 statusstats:%{status_stats_width}:%{status_stats_attr}C%{status_stats_color} :2 statuscmd::%{status_command_attr}C%{status_command_color} :1 last:1
 
 /def -i status_update_stats = \
     /if ( strlen({*}) != {status_stats_width} )\
         /eval /set status_stats_width=$[ strlen({*}) ]%;\
-	/status_edit statusstats:%{status_stats_width}:BC%{status_stats_color}%;\
+	/status_edit statusstats:%{status_stats_width}:%{status_stats_attr}C%{status_stats_color}%;\
     /endif%;\
     /set statusstats=%{*}
 
@@ -38,10 +44,10 @@
     /let x=$[ replace( ":", "_", {1} ) ]%;\
     /if /test {flag_%{x}} == 1%; /then \
         /eval /status_rm status_%{x}%;\
-        /eval /status_add -Blast status_%{x}:$[ strlen({1}) ]:BC%{stcolor}%;\
+        /eval /status_add -Blast status_%{x}:$[ strlen({1}) ]:%{status_effects_attr}C%{stcolor}%;\
     /else \
         /eval /set status_%{x}=%{1}%;\
-        /eval /status_add -Blast status_%{x}:$[ strlen({1}) ]:BC%{stcolor}%;\
+        /eval /status_add -Blast status_%{x}:$[ strlen({1}) ]:%{status_effects_attr}C%{stcolor}%;\
         /eval /set flag_%{x}=1%;\
         /trigger %{x}_UP%;\
     /endif

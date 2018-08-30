@@ -4,16 +4,16 @@
 
 /set shipname=binkley
 
-/def -i -F -t'David tells you \'Bringin\' tha ship to a halt.\'' ship_halt = /repeat -1 1 view;whereami
-/def -i -F -t'David tells you \'Comin\' to a stop, *' ship_stop = /repeat -1 1 view;whereami
-/def -i -F -t'Victor tells you \'I am sorry, *, but I don\'t know where * is\\!\'' ship_fail = /repeat -1 1 view;whereami
-/def -i -F -t'David tells you \'We\'ve arr\'ved at signal, *' ship_arrive = /repeat -1 1 rescue %{shipname}
+/def -i -F -t'[A-Z][a-z]* tells you \'Bringin\' tha ship to a halt.\'' ship_halt = /repeat -1 1 view;whereami%;/trigger SHIP_SAIL_DONE
+/def -i -F -t'[A-Z][a-z]* tells you \'Comin\' to a stop, *' ship_stop = /repeat -1 1 view;whereami%;/trigger SHIP_SAIL_STOP
+/def -i -F -t'[A-Z][a-z]* tells you \'I am sorry, *, but I don\'t know where * is\\!\'' ship_fail = /repeat -1 1 view;whereami
+/def -i -F -t'[A-Z][a-z]* tells you \'We\'ve arr\'ved at signal, *' ship_arrive = /repeat -1 1 rescue %{shipname}
 
 /def -i -F -t'The crew rescue you!' ship_rescue = whereami%;/repeat -1 1 console info condition
 /def -i -F -t'There is a ripple in space, and after a moment, the ship * appears.' ship_summon = whereami%;/repeat -1 1 console info condition
 
-/def -i -t'David tells you \'All repairs finish\'d, *' ship_repair_done = /repeat -3 1 sailor gangway raise
-/def -i -t'David tells you \'Your hull is already fully repaired\\!\'' ship_repair_none = /repeat -3 1 sailor gangway raise
+/def -i -t'[A-Z][a-z]* tells you \'All repairs finish\'d, *' ship_repair_done = /repeat -3 1 sailor gangway raise%;/trigger SHIP_REPAIR_DONE
+/def -i -t'[A-Z][a-z]* tells you \'Your hull is already fully repaired\\!\'' ship_repair_none = /repeat -3 1 sailor gangway raise%;/trigger SHIP_REPAIR_DONE
 
 
 /def -i sail = \

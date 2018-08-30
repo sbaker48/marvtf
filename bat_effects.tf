@@ -1,5 +1,93 @@
 /require marvtf/bat_prots.tf
 
+/def -i addprot = \
+    /let stname=%{1}%;\
+    /let name=%{2}%;\
+    /let msgup=%{3}%;\
+    /let msgdn=%{4}%;\
+    /let noreport=%{5}%;\
+    /if ( noreport ) \
+        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;/trigger %{stname}_UP%;\
+        /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;/trigger %{stname}_DOWN%;\
+    /else \
+        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@@party report %{name} up%%%;/trigger %{stname}_UP%;\
+        /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%%%;/trigger %{stname}_DOWN%;\
+    /endif
+
+/def -i addprot_regexp = \
+    /let stname=%{1}%;\
+    /let name=%{2}%;\
+    /let msgup=%{3}%;\
+    /let msgdn=%{4}%;\
+    /let noreport=%{5}%;\
+    /if ( noreport ) \
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;/trigger %{stname}_UP%;\
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;/trigger %{stname}_DOWN%;\
+    /else \
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@@party report %{name} up%%%;/trigger %{stname}_UP%;\
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%%%;/trigger %{stname}_DOWN%;\
+    /endif
+
+
+/test addprot("INFRA", "Infravision", "You have infravision.", "Everything no longer seems so red.", 1)
+/test addprot("SINVIS", "See Invisible", "You feel you can see more than ever.", "Your vision is less sensitive now.", 1)
+/test addprot("SMAGIC", "See Magic", "You can now see magical things.", "You are no longer sensitive to magical things.", 1)
+/test addprot("INVIS", "Invisibility", "You suddenly can\\\'t see yourself.", "You turn visible.", 1)
+/test addprot("HW", "Heavy Weight", "You suddenly feel magically heavier.", "You feel lighter, but it doesn\\\'t seem to affect your weight!", 0)
+/test addprot("WW", "Water Walking", "You feel light.", "You feel heavier.", 0)
+/test addprot("FLOAT", "Floating", "You feel light, and rise into the air.", "You slowly descend until your feet are on the ground.", 0)
+/test addprot("SOP", "Shield of Protection", "You feel a slight tingle.", "You feel more vulnerable now.", 0)
+/test addprot("IW", "Iron Will", "You feel protected from being stunned.", "You feel no longer protected from being stunned.", 0)
+/test addprot("QSILV", "Quicksilver", "You feel more agile.", "You feel less agile.", 0)
+/test addprot("FABS", "Force Absorption", "You sense a powerful protective aura around you.", "A skin brown flash momentarily surrounds you and then vanishes.", 0)
+/test addprot("HASTE", "Haste", "The world seems to slow down.", "The world seems to speed up.", 0)
+/test addprot("EV", "Enhanced Vitality", "A bright light exctract from your hands covering your skin.", "Your skin stops glowing.", 0)
+/test addprot("RENTROPY", "Resist Entropy", "You feel your life force expanding.", "You feel your hair is getting grayer.", 0)
+/test addprot("PSISHLD", "Psionic Shield", "Psionic waves surge through your body and mind!", "The psionic shield vanishes.", 0)
+/test addprot_regexp("FSHLD", "Force Shield", "^(You form a psionic shield of force around your body\.|.* forms a shield of force around you\.)\$", "^Your armour feels thinner\.\$", 0)
+/test addprot("MINDDEV", "Mind Development", "You feel your mind developing.", "Your brain suddenly seems smaller.", 0)
+/test addprot_regexp("PFE", "Protection from Evil", "^.* with sheer power as you are surrounded by protective holy aura\.\$", "^(You suddenly feel more vulnerable to evil\.|Your holy aura prevents you .* and is dispelled in the process\.)\$", 0)
+/test addprot("RT", "Resist Temptation", "* with sheer power as you are surrounded by twinkling aura.", "You feel more vulnerable against flips.", 0)
+/test addprot_regexp("HPROT", "Heavenly Prot", "^[A-Za-z' ]+ as you are suddenly( surrounded( by)?)?", "^Holy particles slow down, rapidly fading away\.\$", 0)
+/test addprot_regexp("SOULSHLD", "Soul Shield", "^(You spiritually reach out for your soul, protecting it with holy force\.|[A-Z][a-z]+ places (his|her|its) hand over you and blesses your soul in the name of Las\.)\$", "^Your soul feels suddenly more vulnerable\.\$", 0)
+/test addprot("MANASHLD", "Mana Shield", "You feel your magical power expanding.", "Your life force seems weaker.", 0)
+/test addprot_regexp("LINK", "Life Link", "^(You succeed. You create a link to|You create a link to|You feel somehow linked to)", "^You hear a loud snap like sound!\$", 0)
+/test addprot("GANGEL", "Guardian Angel", "A guardian angel arrives to protect you!", "Your guardian angel cannot stay for longer and flies away.", 0)
+/test addprot("UNP", "Unpain", "You feel your will getting stronger.", "You feel your will returning to normal.", 0)
+/test addprot("BOT", "Blessing of Tarmalen", "You feel strong - like you could carry the whole flat world on your back!", "You feel weaker.", 0)
+/test addprot("LIGHT", "See the light", "Wow! Suddenly you see the Light!", "You no longer see the light!", 0)
+/test addprot("REGE", "Regeneration", "You feel your metabolism speed up.", "You no longer have a active regeneration spell on you.", 0)
+/test addprot("FLEX", "Flex Shield", "You sense a flex shield covering your body like a second skin.", "Your flex shield wobbles, PINGs and vanishes.", 0)
+/test addprot("EPOWER", "Earth Power", "You feel your strength changing. You flex you muscles experimentally.", "The runic sigla \\\'% !^\\\' fade away.. leaving you feeling strange.", 0)
+/test addprot("EBLOOD", "Earth Blood", "An icy chill runs through your veins.", "The runic sigla \\\'!( \*)\\\' fade away.. leaving you feeling strange.", 0)
+/test addprot("VINE", "Vine Mantle", "Vines entangle your body.", "The vines around your body shrink.", 0)
+/test addprot("ESKIN", "Earth Skin", "You feel your skin harden.", "Your skin feels softer.", 0)
+/test addprot("WARES", "War Ensemble", "You feel full of battle rage! Victory is CERTAIN!", "The effect of war ensemble wears off.", 1)
+/test addprot("FAVOUR", "Arches Favour", "You feel optimistic about your near future!", "You no longer have Arches Favour on you. You feel sad.", 1)
+/test addprot_regexp("MELODY", "Melodical Embracement", "^(.* wraps you into an embracing melody\.|You embrace yourself with your melody\.)\$", "^The embracing melody subsides, leaving you longing for more\.\$", 1)
+/test addprot("CLAND", "Clandestine Thoughts", "[clandestine thought]: activated.*", "[clandestine thought]: scanning ended.*", 1)
+/test addprot("PFG", "Protection from Good", "A vile black aura surrounds you.", "You no longer have a vile black aura around you.", 0)
+/test addprot("AOH", "Aura of Hate", "You feel burning hatred and rage erupt within you!", "You feel your anger and hate of the world recede.", 0)
+/test addprot("SOF", "Shield of Faith", "You are surrounded by divine glow!", "Your glow disappears.", 0)
+/test addprot("PFF", "Personal Force Field", "You surround yourself by a bubble of force.", "Your field disperses with a soft \*pop\* and is gone.", 0)
+/test addprot("WALK", "Spider Walk", "For some reason you want to run on the walls for a little while.", "The walls don\\\'t look so inviting anymore.", 0)
+/test addprot("TOUCH", "Spider Touch", "Suddenly you don\\\'t feel too good. Your blood feels like it is on fire.", "Your blood does not burn anymore.", 0)
+/test addprot("FFISTS", "Flame Fists", "Your fists are surrounded by Curath\\\'s black flames!", "Your flaming fists disappear.", 0)
+/test addprot("MINORP", "Minor Protection", "You feel slightly protected.", "The minor protection fades away.", 0)
+/test addprot("ZOOP", "Zoological Protection", "You feel protected from animals.", "The zoological protection fades away.", 0)
+/test addprot("CRYZOOP", "Cryptozoological Protection", "You feel protected from mythical creatures.", "The cryptozoological protection fades away.", 0)
+/test addprot("KINEP", "Kinemortological Protection", "You feel protected from undead creatures.", "The kinemortological protection fades away.", 0)
+/test addprot_regexp("RACP", "Racial Protection", "^You feel protected from (?!animals)[a-z]*s\.\$", "^The racial protection fades away\.\$", 0)
+/test addprot("RAGE", "Destructive rage", "A veiled darkness descends over your eyes.  Sounds are oddly distorted, and", "Your massive build-up of rage slowly dissipates leaving you drained and", 0)
+/test addprot("SDRAIN", "Spirit Drain", "You draw some of *\\\'s spirit and use it to bolster your own!", "The effects of the spirit drain leave you.", 0)
+/test addprot("ENRAGE", "Enrage", "You start hooting and howling loudly and begin hopping around.", "You no longer feel enraged.", 0)
+/test addprot("PAIN", "Pain threshold", "You begin to concentrate on pain threshold.", "Your concentration breaks and you feel less protected from physical damage.", 0)
+/test addprot("GLORY", "Glory of destruction", "Your body swells in anticipation of the battles to come.", "The destructive forces leave your body.", 0)
+/test addprot("SUPPRESS", "Suppress Magic", "Your feel excruciating pain in your head.", "You feel relieved.", 0)
+/test addprot("FORGET", "Forget", "You feel rather empty-headed.", "A fog lifts from your mind. You can remember things clearly now.", 0)
+/test addprot("HALLU", "Hallucination", "* looks at you mesmerizingly.  The world around you changes.", "Your mind clears.", 0)
+
+
 /def -i -F -t'You perform the ceremony.' cer1 = /addstatus CER
 /def -i -F -aBCblue -t'You have an unusual feeling as you cast the spell.' cer2 = /rmstatus CER
 
@@ -10,73 +98,6 @@
 /def -i set_parrystr=/rmstatus %{parrystr}%;/if ( {1} > 0 ) /eval /set parrystr=PARRY:%{1}%;/addstatus %{parrystr}%;/endif
 /def -i -F -mregexp -t'^You currently have ([0-9]*)/51 points in parry' parry1 = /set_parrystr %P1
 /def -i -F -mregexp -t'^You put your parry factor to ([0-9]*)' parry2 = /set_parrystr %P1
-
-/def -i -F -aBCYellow -t'You suddenly can\'t see yourself.' invis1 = /addstatus INVIS
-/def -i -F -aBCYellow -t'You turn visible.' invis2 = /rmstatus INVIS
-
-/def -i -F -aBCYellow -t'You feel light.' ww1 = /addstatus WW%;party report WW up
-/def -i -F -aBCYellow -t'You feel heavier.' ww2 = /rmstatus WW%;party report WW DOWN!
-
-/def -i -F -aBCYellow -t'You feel strong - like you could carry the whole flat world on your back!' bot1 = /addstatus BOT%;party report BOT up
-/def -i -F -aBCYellow -t'You feel weaker.' bot2 = /rmstatus BOT%;party report BOT DOWN!
-
-/def -i -F -aBCYellow -t'You feel your metabolism speed up.' regen1 = /addstatus REGEN%;party report Regen up
-/def -i -F -aBCYellow -t'You no longer have an active regeneration spell on you.' regen2 = /rmstatus REGEN%;party report Regen DOWN!
-
-/def -i -F -aBCYellow -t'You sense a powerful protective aura around you.' fabs1 = /addstatus FABS%;party report Fabs up
-/def -i -F -aBCYellow -t'A skin brown flash momentarily surrounds you and then vanishes.' fabs2 = /rmstatus FABS%;party report Fabs DOWN!
-
-/def -i -F -aBCYellow -t'You cast the blurred image successfully.' blur1 = /addstatus BLUR%;party report Blur up
-/def -i -F -aBCYellow -t'You feel less invisible.' blur2 = /rmstatus BLUR%;party report Blur DOWN!
-
-/def -i -F -aBCYellow -t'You cast the displacement successfully.' disp1 = /addstatus DISP%;party report Disp up
-/def -i -F -aBCYellow -t'You feel much less invisible.' disp2 = /rmstatus DISP%;party report Disp DOWN!
-
-/def -i -F -aBCYellow -t'You sense a flex shield covering your body like a second skin.' flex1 = /addstatus FLEX%;party report Flex up
-/def -i -F -aBCYellow -t'Your flex shield wobbles, PINGs and vanishes.' flex2 = /rmstatus FLEX%;party report Flex DOWN!
-
-/def -i -F -aBCYellow -t'You feel your skin harden.' eskin1 = /addstatus ESKIN%;party report Eskin up
-/def -i -F -aBCYellow -t'Your skin returns to its original texture.' eskin2 = /rmstatus ESKIN%;party report Eskin DOWN!
-
-/def -i -F -aBCYellow -t'You form a psionic shield of force around your body.' fshield1 = /addstatus FSHIELD%;party report Fshield up
-/def -i -F -aBCYellow -t'Your armour feels thinner.' fshield2 = /rmstatus FSHIELD%;party report Fshield DOWN!
-
-/def -i -F -aBCYellow -t'The world seems to slow down.' haste1 = /addstatus HASTE%;party report Haste up
-/def -i -F -aBCYellow -t'The world seems to speed up.' haste2 = /rmstatus HASTE%;/addstatus SLOW%;party report Haste Slowdown!
-/def -i -F -aBCYellow -t'The world seems to slow down again.' haste3 = /rmstatus SLOW%;party report Haste DOWN!
-
-/def -i -F -aBCYellow -t'You feel full of battle rage! Victory is CERTAIN!' wares1 = /addstatus WARES
-/def -i -F -aBCYellow -t'The effect of war ensemble wears off.' wares2 = /rmstatus WARES
-
-/def -i -F -aBCYellow -t'Your body swells in anticipation of the battles to come.' glory1 = /addstatus GLORY
-/def -i -F -aBCYellow -t'The destructive forces leave your body.' glory2 = /rmstatus GLORY
-
-/def -i -F -aBCYellow -t'You feel burning hatred and rage erupt within you!' aoh1 = /addstatus AOH
-/def -i -F -aBCYellow -t'You feel your anger and hate of the world recede.' aoh2 = /rmstatus AOH
-
-/def -i -F -aBCYellow -t'For some reason you want to run on the walls for a little while.' spwalk1 = /addstatus SPWALK
-/def -i -F -aBCYellow -t'The walls don\'t look so inviting anymore.' spwalk2 = /rmstatus SPWALK
-
-/def -i -F -aBCYellow -t'You feel slightly protected.' minorprot1 = /addstatus MINOR%;party report Minor prot up
-/def -i -F -aBCYellow -t'The minor protection fades away.' minorprot2 = /rmstatus MINOR%;party report Minor prot DOWN!
-/def -i -F -aBCYellow -t'You feel unprotected.' minorprot3 = /rmstatus MINOR
-
-/def -i -p2 -aBCYellow -t'You feel protected from animals.' zooprot1 = /addstatus ZOO%;party report Zoo prot up
-/def -i -F -aBCYellow -t'The zoological protection fades away.' zooprot2 = /rmstatus ZOO%;party report Zoo prot DOWN!
-/def -i -F -aBCYellow -t'You destroyed Zoological protection.' zooprot3 = /rmstatus ZOO
-
-/def -i -p2 -aBCYellow -t'You feel protected from mythical creatures.' cryptoprot1 = /addstatus CRYPTO%;party report Crypto prot up
-/def -i -F -aBCYellow -t'The cryptozoological protection fades away.' cryptoprot2 = /rmstatus CRYPTO%;party report Crypto prot DOWN!
-/def -i -F -aBCYellow -t'You destroyed Cryptozoological protection.' cryptoprot3 = /rmstatus CRYPTO
-
-/def -i -p2 -aBCYellow -t'You feel protected from undead creatures.' undeadprot1 = /addstatus UNDEAD%;party report Undead prot up
-/def -i -F -aBCYellow -t'The kinemortological protection fades away.' undeadprot2 = /rmstatus UNDEAD%;party report Undead prot DOWN!
-/def -i -F -aBCYellow -t'You destroyed Kinemortological protection.' undeadprot3 = /rmstatus UNDEAD
-
-/def -i -p1 -aBCYellow -t'You feel protected from *' raceprot1 = /addstatus RACE%;party report Racial prot up
-/def -i -F -aBCYellow -t'The racial protection fades away.' raceprot2 = /rmstatus RACE%;party report Racial prot DOWN!
-/def -i -F -aBCYellow -t'You destroyed Racial protection.' raceprot3 = /rmstatus RACE
-
 
 /def -i -F -aBCYellow -t'You lie down and begin to rest for a while.' camp1 = /addstatus CAMP
 /def -i -F -aBCYellow -t'You feel like camping a little.' camp2 = /rmstatus CAMP
@@ -91,7 +112,7 @@
 /set unstun_pid=0
 /def -i check_unstun = \
     /eval /set unstun_pid=$[repeat("-3 1 /unstun_down")]%;\
-    grep -q "Unstun" show effects
+    @@grep -q "Unstun" show effects
 
 /def -i -F -t'| Unstun         * | For now    * |' unstun_status = /unstun_up
 
@@ -140,7 +161,7 @@
 
 /def -i get_disc_time = \
     /def -i -n1 -mregexp -t'floating about (.*) centimetres' disctime0 = /disc_time_update %{P1}%;\
-    grep "centimetres" l at my disc
+    @@grep "centimetres" l at my disc
 
 /def -i -F -t'You summon a floating disc that starts following you.' discload1 = /get_disc_time
 /def -i -F -t'You reload magical energy to the disc that is floating in the air.' discload2 = /get_disc_time
@@ -177,7 +198,7 @@
 /def -i -mregexp -t'^\\| Polymorph spawn    * \\| ([0-9]*)min and ([0-9]*)s  *\\|$' spawn_time1 = /spawn_time_update_min_sec %P1 %P2
 /def -i -mregexp -t'^\\| Polymorph spawn    * \\| ([0-9]*)min  *\\|$' spawn_time2 = /spawn_time_update_min_sec %P1 0
 
-/def -i -F -aBCBlue -t'The pain increases as your body starts to push out organs and limbs that should not be there.' spawn_up1 = grep "Polymorph spawn" show effects%;/trigger SPAWN_UP
-/def -i -F -aBCBlue -t'You force yourself deeper into the chaos frenzy!' spawn_up2 = grep "Polymorph spawn" show effects%;/trigger SPAWN_RELOAD
+/def -i -F -aBCBlue -t'The pain increases as your body starts to push out organs and limbs that should not be there.' spawn_up1 = @@grep "Polymorph spawn" show effects%;/trigger SPAWN_UP
+/def -i -F -aBCBlue -t'You force yourself deeper into the chaos frenzy!' spawn_up2 = @@grep "Polymorph spawn" show effects%;/trigger SPAWN_RELOAD
 /def -i -F -aBCbgred,Cwhite -t'The extra organs retract back into your body.' spawn_dropped = /spawn_time_update 0%;/trigger SPAWN_DOWN
 

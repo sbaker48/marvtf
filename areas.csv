@@ -59,7 +59,7 @@ tiburcio,deso,304,305,
 tiger_deso,deso,201,153,
 tinmen_monastery,deso,404,420,
 toxic,deso,368,312,
-tralpecktor,deso,382,419,
+tralpecktor,deso,382,419,ancient_graveyard
 tree_nav,deso,79,433,
 twisted_tower,deso,229,153,dale
 unholy_cathedral,deso,132,192,
@@ -89,7 +89,8 @@ furn_ferry,furn,0,0,furn
 haunted_mansion,furn,187,116,
 hell,furn,130,248,
 infection,furn,212,83,
-kutanakor,furn,171,236,
+kutanakor_east,furn,171,236,kutanakor
+kutanakor_west,furn,131,236,
 mage_fire,furn,405,308,
 monk_furn,furn,195,104,
 monk_special_furn,furn,223,234,
@@ -142,7 +143,7 @@ conifer_forest,laen,228,476,
 crescent_tower,laen,456,616,
 crimson,laen,490,301,
 damned_convent,laen,302,497,
-darkcastle,laen,340,578,
+darkcastle,laen,340,578,nalles
 diggas,laen,289,474,
 dortlewall,laen,580,379,
 drawbridge,laen,490,469,
@@ -246,7 +247,7 @@ cavalier_luce,luce,215,294,
 clouds_above_lore,luce,357,187,
 coffee_forest,luce,432,146,coffee
 colosseum,luce,219,88,
-cornfield,luce,392,73,
+cornfield,luce,392,73,cornfields
 dahbec,luce,410,92,
 door_to_the_past,luce,400,248,
 draco_tower,luce,392,137,
@@ -254,11 +255,11 @@ duzelton,luce,243,195,duz
 dwarf_warehouse,luce,134,264,
 efiilas,luce,402,19,
 fraggle,luce,131,195,
-garden,luce,412,137,
+public_gardens,luce,412,137,gardens
 gladiator,luce,148,148,
 ice_tower,luce,120,291,
 jondalars,luce,535,92,jond
-karatur,luce,49,250,
+karatur,luce,49,250,akira
 lands_of_lore,luce,411,50,
 lanzia,luce,426,81,
 lorenchia_harbor,luce,412,154,lore
