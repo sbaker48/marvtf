@@ -352,13 +352,12 @@ monk_special_roth,roth,277,283,
 moongate,roth,353,200,
 mushroom_hill,roth,166,198,
 navigators,roth,352,269,navs
-navigators,roth,340,273,navs
 norse_cave,roth,386,184,
 norse_village,roth,425,231,
 nun,roth,248,255,
 old_forest,roth,240,330,
 paupers,roth,62,315,
-perilous_forest,roth,319,396,pforest
+perilous_forest,roth,319,396
 priest_roth,roth,170,195,
 psionicists,roth,168,281,
 race_brownie,roth,77,372,
