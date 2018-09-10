@@ -27,9 +27,9 @@
 
 /def -i -F -aBCGreen -t'You score a CRITICAL hit!' crithit = scan
 
-/def -i -F -aBCRed -t'* has summoned you!' summon1 = whereami
-/def -i -F -t'You sense your surroundings distorting and then snap.' reloc1 = whereami
-/def -i -F -t'You open up a sparkling blue dimensional rift, and step through to the *' goto_ship1 = whereami
+/def -i -F -aBCRed -t'* has summoned you!' summon1 = @@whereami
+/def -i -F -t'You sense your surroundings distorting and then snap.' reloc1 = @@whereami
+/def -i -F -t'You open up a sparkling blue dimensional rift, and step through to the *' goto_ship1 = @@whereami
 
 /def -i -F -aBCYellow -t'This is the first time you\'ve been here.' newroom1 = @@whereami
 /def -i -F -aBCYellow -t'You discovered a new room! Check your updated explore count.' newroom2 = @@whereami
