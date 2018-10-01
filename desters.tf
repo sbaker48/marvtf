@@ -109,3 +109,12 @@
 /def -i -F -q -t"a guardian spirit" dester109 = /substitute -p %* @{BCbgred,Cwhite}[ACQUISITION]@{n}
 /def -i -F -q -t"A meanie guenon digging the bones" dester110 = /substitute -p %* @{BCbgred,Cwhite}[ACQUISITION]@{n}
 /def -i -F -q -t"Liezeb the druid" dester111 = /substitute -p %* @{BCbgred,Cwhite}[ACQUISITION]@{n}
+
+
+
+
+
+
+
+/def -i -F -q -t"a tower warrior of Tariel's forces" banish1 = /substitute -p %* @{Cred}[BANISH]@{n}
+/def -i -F -q -t"a plump, middle-aged leopard catfolk sits at the desk" banish2 = /substitute -p %* @{Cred}[BANISH]@{n}

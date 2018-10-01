@@ -7,11 +7,11 @@
     /let msgdn=%{4}%;\
     /let noreport=%{5}%;\
     /if ( noreport ) \
-        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;/trigger %{stname}_UP%;\
-        /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;/trigger %{stname}_DOWN%;\
+        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname}%;\
+        /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%;\
     /else \
-        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@@party report %{name} up%%%;/trigger %{stname}_UP%;\
-        /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%%%;/trigger %{stname}_DOWN%;\
+        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@@party report %{name} up%;\
+        /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%;\
     /endif
 
 /def -i addprot_regexp = \
@@ -21,11 +21,11 @@
     /let msgdn=%{4}%;\
     /let noreport=%{5}%;\
     /if ( noreport ) \
-        /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;/trigger %{stname}_UP%;\
-        /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;/trigger %{stname}_DOWN%;\
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%;\
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%;\
     /else \
-        /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@@party report %{name} up%%%;/trigger %{stname}_UP%;\
-        /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%%%;/trigger %{stname}_DOWN%;\
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@@party report %{name} up%;\
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%;\
     /endif
 
 
@@ -99,12 +99,12 @@
 /def -i -F -mregexp -t'^You currently have ([0-9]*)/51 points in parry' parry1 = /set_parrystr %P1
 /def -i -F -mregexp -t'^You put your parry factor to ([0-9]*)' parry2 = /set_parrystr %P1
 
-/def -i -F -aBCYellow -t'You lie down and begin to rest for a while.' camp1 = /addstatus CAMP
+/def -i -F -aBCYellow -t'You lie down and begin to rest for a while.' camp1 = /addstatus CAMP cyan
 /def -i -F -aBCYellow -t'You feel like camping a little.' camp2 = /rmstatus CAMP
 /def -i -F -aBCYellow -t'You feel a bit tired.' camp3 = /rmstatus CAMP
 /def -i -F -aBCYellow -t'You stretch yourself and consider camping.' camp4 = /rmstatus CAMP
 
-/def -i -t'You sit down and start meditating.' med1 = /addstatus MED%;/repeat -360 1 /rmstatus MED
+/def -i -t'You sit down and start meditating.' med1 = /addstatus MED cyan%;/repeat -360 1 /rmstatus MED
 
 
 ; Unstun handling

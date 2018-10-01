@@ -4,16 +4,52 @@
 
 /set shipname=binkley
 
-/def -i -F -t'[A-Z][a-z]* tells you \'Bringin\' tha ship to a halt.\'' ship_halt = /repeat -1 1 view;whereami%;/trigger SHIP_SAIL_DONE
-/def -i -F -t'[A-Z][a-z]* tells you \'Comin\' to a stop, *' ship_stop = /repeat -1 1 view;whereami%;/trigger SHIP_SAIL_STOP
-/def -i -F -t'[A-Z][a-z]* tells you \'I am sorry, *, but I don\'t know where * is\\!\'' ship_fail = /repeat -1 1 view;whereami
-/def -i -F -t'[A-Z][a-z]* tells you \'We\'ve arr\'ved at signal, *' ship_arrive = /repeat -1 1 rescue %{shipname}
+; Ship events
+/def -i -F -t'There is a ripple in space, and after a moment, the ship * appears.' ship_summon = /trigger SHIP_SUMMON
+/def -i -F -t'The crew rescue you!' ship_rescue = /trigger SHIP_RESCUE
+/def -i -F -t'[A-Z]* tells you \'Bringin\' tha ship to a halt.\'' ship_halt = /trigger SHIP_SAIL_DONE
+/def -i -F -t'[A-Z]* tells you \'Comin\' to a stop, *' ship_stop = /trigger SHIP_SAIL_STOP
+/def -i -F -t'[A-Z]* tells you \'I am sorry, *, but I don\'t know where * is\\!\'' ship_fail = /trigger SHIP_SAIL_FAIL
+/def -i -F -t'[A-Z]* tells you \'We\'ve arr\'ved at signal, *' ship_arrive = /trigger SHIP_ARRIVE_SIGNAL
+/def -i -F -t'[A-Z]* tells you \'All repairs finish\'d, *' ship_repair_done = /trigger SHIP_REPAIR_DONE
+/def -i -F -t'[A-Z]* tells you \'Your hull is already fully repaired\\!\'' ship_repair_none = /trigger SHIP_REPAIR_DONE
 
-/def -i -F -t'The crew rescue you!' ship_rescue = whereami%;/repeat -1 1 console info condition
-/def -i -F -t'There is a ripple in space, and after a moment, the ship * appears.' ship_summon = whereami%;/repeat -1 1 console info condition
+; Ship event handling
+/def -i -F -t'SHIP_SUMMON' on_ship_summon = whereami%;/repeat -1 1 console info condition
+/def -i -F -t'SHIP_RESCUE' on_ship_rescue = whereami%;/repeat -1 1 console info condition
+/def -i -F -t'SHIP_SAIL_DONE' on_ship_sail_done = whereami%;view%;/repeat -1 1 console info condition
+/def -i -F -t'SHIP_SAIL_STOP' on_ship_sail_stop = whereami%;view
+/def -i -F -t'SHIP_SAIL_FAIL' on_ship_sail_fail = whereami%;view
+/def -i -F -t'SHIP_ARRIVE_SIGNAL' on_ship_arrive_signal = /repeat -1 1 rescue %{shipname}
+/def -i -F -t'SHIP_REPAIR_DONE' on_repair_done = /repeat -3 1 sailor gangway raise
 
-/def -i -t'[A-Z][a-z]* tells you \'All repairs finish\'d, *' ship_repair_done = /repeat -3 1 sailor gangway raise%;/trigger SHIP_REPAIR_DONE
-/def -i -t'[A-Z][a-z]* tells you \'Your hull is already fully repaired\\!\'' ship_repair_none = /repeat -3 1 sailor gangway raise%;/trigger SHIP_REPAIR_DONE
+; Location information used for navigation
+/def -i -F -mregexp -t'^[A-Z][a-z]* tells you \'We\'ve arr\'ved at ([^ ]*), .*\\.\'' ship_cruise1 = /set ship_cur_loc=%{P1}%;whereami
+/def -i -F -mregexp -t'^[A-Z][a-z]* tells you \'Continuin\' on ta (.*)\\.\'' ship_cruise2 = /set ship_next_loc=%{P1}
+/def -i -F -t'The ship cruises [a-z]* along the tradelane.' ship_tradeline1 = /set ship_on_tradeline=1
+/def -i -F -t'The ship cruises [a-z]*.' ship_tradeline2 = /set ship_on_tradeline=0
+/def -i -F -t'The ship sails *.' ship_tradeline3 = /set ship_on_tradeline=0
+/def -i -F -t'SHIP_SAIL_STOP' on_ship_sail_stop2 = /set ship_next_loc=
+/def -i -F -t'SHIP_SAIL_DONE' on_ship_sail_done2 = /set ship_next_loc=
+
+/def -i shiploc = \
+    /def -n1 -t'WHEREAMI' = /shiploc0%;\
+    whereami
+
+/def -i shiploc0 = \
+    /if ( cont =~ "deepsea" ) \
+        /if ( ship_on_tradeline ) \
+	    /echo "In the deep sea between %ship_cur_loc and %ship_next_loc"%;\
+	/else \
+	    /echo "Stranded in the Deep Sea"%;\
+	/endif%;\
+    /else \
+        /if ( ship_on_tradeline ) \
+	    /echo "On %cont between %ship_cur_loc and %ship_next_loc"%;\
+	/else \
+	    /echo "On %cont at global coords %gcoord_x,%gcoord_y"%;\
+        /endif%;\
+    /endif
 
 
 /def -i sail = \
@@ -161,15 +197,15 @@
 
 ; Get continent of a given area
 /def -i get_dest_cont = \
-    /let dest=%{1}%;\
-    /let cont=%;\
+    /let adest=%{1}%;\
+    /let acont=%;\
     /let v=%;\
-    /test v := strcat("areacont_",dest)%;\
-    /test cont := %{v}%;\
-    /if (cont =~ "") \
-        /let cont=xxx%;\
+    /test v := strcat("areacont_",adest)%;\
+    /test acont := %{v}%;\
+    /if (acont =~ "") \
+        /let acont=xxx%;\
     /endif%;\
-    /return {cont}
+    /return {acont}
 
 ; Directions to get out of harbors
 /set launch_luce_ferry=n
@@ -287,3 +323,20 @@
         /echo -aBCYellow Unknown location for sellall%;\
     /endif%;\
     /eval gagoutput set look_on_move on
+
+
+
+
+
+
+/DEF -mregexp -F -i -t"^This tiny disc is little more than a" ship_disc1_sub = /ECHO -p @{BCwhite}Disc 1@{n}
+/DEF -mregexp -F -i -t"^This disc is really a tiny ring" ship_disc2_sub = /ECHO -p @{BCwhite}Disc 2@{n}
+/DEF -mregexp -F -i -t"^This disc is really a very small ring" ship_disc3_sub = /ECHO -p @{BCwhite}Disc 3@{n}
+/DEF -mregexp -F -i -t"^This disc is really a small ring" ship_disc4_sub = /ECHO -p @{BCwhite}Disc 4@{n}
+/DEF -mregexp -F -i -t"^This disc is really a fair-sized ring" ship_disc5_sub = /ECHO -p @{BCwhite}Disc 5@{n}
+/DEF -mregexp -F -i -t"^This disc is really a fairly large ring" ship_disc6_sub = /ECHO -p @{BCwhite}Disc 6@{n}
+/DEF -mregexp -F -i -t"^This disc is really a large ring" ship_disc7_sub = /ECHO -p @{BCwhite}Disc 7@{n}
+/DEF -mregexp -F -i -t"^This disc is really a very large ring" ship_disc8_sub = /ECHO -p @{BCwhite}Disc 9@{n}
+/DEF -mregexp -F -i -t"^This disc is really a huge ring" ship_disc9_sub = /ECHO -p @{BCwhite}Disc 9@{n}
+/DEF -mregexp -F -i -t"^This disc is really a massive ring" ship_disc10_sub = /ECHO -p @{BCwhite}Disc 10@{n}
+

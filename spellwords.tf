@@ -273,7 +273,7 @@
 /def -i -F -q -t'*\'huku mopo huku\'*' words_Rain = /substitute -p %* @{Cyellow}[Rain]@{n}
 /def -i -F -q -t'*\'vokinsalak elfirtluassa\'*' words_Raise_dead = /substitute -p %* @{Cyellow}[Raise dead]@{n}
 /def -i -F -q -t'*\'Blaarh ARGHAGHAHAHA URAAAH BELARGH\!\'*' words_Reanimation = /substitute -p %* @{Cyellow}[Reanimation]@{n}
-/def -i -F -q -t'*\'Grant this the caustic touch, to clense the world\'*' words_Reaping_of_pile = /substitute -p %* @{Cyellow}[Reaping of pile]@{n}
+/def -i -F -q -t'*\'Grant this the caustic touch, to clense the world\'*' words_Reaping_of_bile = /substitute -p %* @{Cyellow}[Reaping of bile]@{n}
 /def -i -F -q -t'*\'sakat ikkiak satsjaieh\'*' words_Reflector_shield = /substitute -p %* @{Cyellow}[Reflector shield]@{n}
 /def -i -F -q -t'*\'nilaehz temnahecne\'*' words_Regeneration = /substitute -p %* @{Cyellow}[Regeneration]@{n}
 /def -i -F -q -t'*\'henget uusix\'*' words_Reincarnation = /substitute -p %* @{Cyellow}[Reincarnation]@{n}
