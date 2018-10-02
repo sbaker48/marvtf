@@ -80,7 +80,8 @@
 ; /get_array name
 ; /get_array arref subname|index
 ; /get_array name [index1..indexN] subname|index
-/def -i get_array = /make_array %{*}
+/def -i get_array = \
+    /result make_array( {*} )
 
 
 ; /add_array arref
@@ -169,11 +170,9 @@
         /echo %0: Bad argument (%*)%;\
         /return%;\
     /endif%;\
-    /eval /echo COPY %arrfrom %arrto%;\
     /quote -S /_copy_array1 %arrfrom %arrto `/listvar -s -mglob %{arrfrom}_*%;\
     /test arrfrom := to_arcnt( arrfrom )%;\
     /test arrto := to_arcnt( arrto )%;\
-    /eval /echo COPY %arrfrom %arrto%;\
     /if /test {%arrfrom} !~ ""%; /then \
         /_copy_array1 %arrfrom %arrto %arrfrom%;\
     /endif%;\
@@ -185,7 +184,6 @@
     /let var=%{-2}%;\
     /let s=%;\
     /test s := replace( "%{arrfrom}", "%{arrto}", var )%;\
-    /eval /echo /set %{s}=%%{%var}    was %{var}%;\
     /test %{s} := %var
 
 

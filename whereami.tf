@@ -18,7 +18,7 @@
     /set coord_y=%P5%;\
     /set gcoord_x=%P6%;\
     /set gcoord_y=%P7%;\
-    /trigger WHEREAMI
+    /repeat -1 1 /trigger WHEREAMI
 
 /def -i -F -p9 -mregexp -t'^You are in \'(.*)\', which is on the continent of (.*)\\. \\(Coordinates: ([0-9]*)x, ([0-9]*)y; Global: ([0-9]*)x, ([0-9]*)y' whereami2 = \
     /set room=%P1%;\
@@ -29,7 +29,7 @@
     /set coord_y=%P4%;\
     /set gcoord_x=%P5%;\
     /set gcoord_y=%P6%;\
-    /trigger WHEREAMI
+    /repeat -1 1 /trigger WHEREAMI
 
 /def -i -F -p9 -mregexp -t'^You are in \'(.*)\' in (.*)\\. \\(Global: ([0-9]*)x, ([0-9]*)y' whereami3 = \
     /set room=%P1%;\
@@ -40,5 +40,5 @@
     /set coord_y=0%;\
     /set gcoord_x=%P3%;\
     /set gcoord_y=%P4%;\
-    /trigger WHEREAMI
+    /repeat -1 1 /trigger WHEREAMI
 
