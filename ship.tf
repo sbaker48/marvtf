@@ -31,7 +31,7 @@
 
 /def -i sail2 = \
     /def -n1 -t'LAUNCH' launch_done = /sail3 %*%;\
-    /ship_launch
+    /launch
 
 /def -i sail3 = \
     /let path=%;\
@@ -65,54 +65,38 @@
     /endif%;\
     /trigger HELM
 
-/def -i ship_launch = \
-    /let ship_launch_dirs=%;\
+
+/def -i launch = \
+    /let launch_dirs=%;\
     /let curloc=%;\
-    /test curloc := ( {1} !~ "" ) ? {1} : get_cur_loc()%;\
-    /test ship_launch_dirs := launch_dirs( curloc )%;\
-    /if ( ship_launch_dirs !~ "" ) \
-        /eval /echo -aBCYellow sail %{ship_launch_dirs}%;\
+    /test curloc := ( {1} !~ "" ) ? {1} : ship_cur_loc()%;\
+    /test launch_dirs := ship_launch_dirs( curloc )%;\
+    /if ( launch_dirs !~ "" ) \
+        /eval /echo -aBCYellow sail %{launch_dirs}%;\
         ship launch%;\
         /def -n1 -t'*Done sailin*' sail_trig = /eval view;whereami%%;/trigger LAUNCH%;\
-        /eval sail %{ship_launch_dirs}%;\
+        /eval sail %{launch_dirs}%;\
     /else \
         ship launch%;\
         /trigger LAUNCH%;\
-    /endif%;\
+    /endif
 
-; TODO:
-; /def -i cont_switch
-; /def -i nav_to_label
-; /def -i nav_to_coords
 
 /def -i ship_build_path = \
     /let dest=%;\
     /let dirs=%;\
-    /test dest := dest_aliases( {1} )%;\
+    /test dest := ship_dest_aliases( {1} )%;\
     /test dirs := find_path0( dest )%;\
     /if ( dirs !~ "" ) \
         /test dirs := strcat( "cruise ", dirs )%;\
-        /test dirs := strcat( dirs, dock_dirs( dest ) )%;\
+	/test dirs := ship_hack_dest( dest, dirs )%;\
+        /test dirs := strcat( dirs, ship_dock_dirs( dest ) )%;\
         /test dirs := strcat( dirs, ",*secure" )%;\
     /endif%;\
     /result dirs
 
-;    /let curloc=%;\
-;    /let curcont=%;\
-;    /let dest=%;\
-;    /let destcont=%;\
-;    /test curloc := get_cur_loc()%;\
-;    /test curcont := get_cur_cont()%;\
-;    /test dest := dest_aliases( {1} )%;\
-;    /test destcont := get_dest_cont( dest )%;\
-;    /test ship_run_dirs := "cruise "%;\
-;    /test ship_run_dirs := strcat( ship_run_dirs, continent_dirs( curcont, destcont ) )%;\
-;    /test ship_run_dirs := strcat( ship_run_dirs, dest_dirs( dest ) )%;\
-;    /test ship_run_dirs := strcat( ship_run_dirs, dock_dirs( dest ) )%;\
-;    /test ship_run_dirs := strcat( ship_run_dirs, "*secure" )%;\
-;    /result ship_run_dirs
 
-/def -i dest_aliases = \
+/def -i ship_dest_aliases = \
     /let name=%1%;\
     /let alias=%;\
     /test alias := get_array_val( "aliases", name )%;\
@@ -121,12 +105,26 @@
     /endif%;\
     /result name
 
-/def -i launch_dirs = \
-    /let curloc=%{1}%;\
-    /return {launch_%{curloc}}
 
-/def -i dock_dirs = \
-    /let dest=%{1}%;\
+; Ok. This is a horrible hack, but I can't think of a cleaner way to do this at the moment.
+/def -i ship_hack_dest = \
+    /let dest=%1%;\
+    /let dirs=%2%;\
+    /test newdest := {dest_%{dest}}%;\
+    /if ( newdest !~ "" ) \
+        /test dirs := replace( dest, newdest, dirs )%;\
+	/test dirs := replace( "%newdest,%newdest", "%newdest", dirs )%;\
+    /endif%;\
+    /result dirs
+
+
+/def -i ship_launch_dirs = \
+    /let curloc=%1%;\
+    /result {launch_%{curloc}}
+
+
+/def -i ship_dock_dirs = \
+    /let dest=%1%;\
     /let dirs=%;\
     /test dirs := {dock_%{dest}}%;\
     /if ( dirs !~ "" ) \
@@ -134,32 +132,10 @@
     /endif%;\
     /result dirs
 
-;/def -i continent_dirs = \
-;    /let curcont=%{1}%;\
-;    /let destcont=%{2}%;\
-;    /let dirs=%;\
-;    /if ( destcont =~ "xxx" ) \
-;        /echo UNKNOWN CONT%;\
-;    /elseif ( curcont !~ destcont ) \
-;        /echo CONT SWITCH: %{curcont} to %{destcont}%;\
-;        /test dirs := strcat( {%{curcont}_%{destcont}}, "," )%;\
-;    /endif%;\
-;    /result dirs
-
-;/def -i dest_dirs = \
-;    /let dest=%{1}%;\
-;    /let dirs=%;\
-;    /test dirs := {dest_%{dest}}%;\
-;    /if ( dirs =~ "" ) \
-;        /test dirs := dest%;\
-;    /endif%;\
-;    /test dirs := strcat( dirs, "," )%;\
-;    /result dirs
-
 
 ; Determines the current location. Only areas with launch or dock dirs or sellall locations need to be added.
 ; TODO: This could come from areadata
-/def -i get_cur_loc = \
+/def -i ship_cur_loc = \
     /let curloc=%;\
     /if ( gcoord_x == 7869 & gcoord_y == 10674 ) /let curloc=rsf%;\
     /elseif ( gcoord_x == 7954 & gcoord_y == 10550 ) /let curloc=luce_ferry%;\
@@ -176,21 +152,6 @@
     /endif%;\
     /return {curloc}
 
-; Gets current continent from whereami data
-;/def -i get_cur_cont = \
-;    /return tolower( substr( {continent},0,4 ) )
-
-; Get continent of a given area
-;/def -i get_dest_cont = \
-;    /let adest=%{1}%;\
-;    /let acont=%;\
-;    /let v=%;\
-;    /test v := strcat( "areacont_",adest )%;\
-;    /test acont := %{v}%;\
-;    /if ( acont =~ "" ) \
-;        /let acont=xxx%;\
-;    /endif%;\
-;    /return {acont}
 
 ; Directions to get out of harbors
 /set launch_luce_ferry=n
@@ -209,7 +170,7 @@
 /set dock_luce_ferry=2 *s
 /set dock_laen_ferry=2 *se
 /set dock_deso_ferry=2 *w
-/set dock_roth_ferry=5 *e
+/set dock_roth_ferry=*e
 /set dock_furn_ferry=2 *e
 /set dock_lorenchia_harbor=*e
 /set dock_shadowkeep_harbor=*n
@@ -219,47 +180,20 @@
 /set dock_rsf=2 *s
 /set dock_crabfroth=2 *e
 
-; inter-continential paths
-;/set luce_deso=wpt_lucentium1,wpt_desolathya-lucentium2,wpt_desolathya-lucentium1,wpt_desolathya3,wpt_windhamkeep
-;/set luce_laen=wpt_lucentium1,wpt_laenor-lucentium,wpt_daerwon
-;/set luce_roth=wpt_lucentium1,wpt_laenor-lucentium,wpt_daerwon,wpt_laenor1,wpt_laenor2,wpt_laenor3,wpt_laenor10,wpt_rothikgen1
-;/set luce_furn=wpt_lucentium1,wpt_laenor-lucentium,wpt_laenor9,wpt_laenor8,wpt_laenor7,wpt_laenor-furnachia,wpt_furnachia1,wpt_furnachia2
-;/set deso_furn=wpt_windhamkeep,wpt_desolathya3,wpt_desolathya-lucentium1,wpt_laenor9,wpt_laenor8,wpt_laenor7,wpt_laenor-furnachia,wpt_furnachia1,wpt_furnachia2
-;/set deso_laen=wpt_windhamkeep,wpt_desolathya3,wpt_desolathya-lucentium1,wpt_daerwon
-;/set deso_luce=wpt_windhamkeep,wpt_desolathya3,wpt_desolathya-lucentium1,wpt_desolathya-lucentium2,wpt_lucentium1
-;/set deso_roth=wpt_windhamkeep,wpt_desolathya3,wpt_desolathya-lucentium1,wpt_daerwon,wpt_laenor1,wpt_laenor2,wpt_laenor3,wpt_laenor10,wpt_rothikgen1
-;/set furn_deso=wpt_furnachia2,wpt_furnachia1,wpt_laenor-furnachia,wpt_laenor7,wpt_laenor8,wpt_laenor9,wpt_desolathya-lucentium1,wpt_desolathya3,wpt_windhamkeep
-;/set furn_laen=wpt_furnachia2,wpt_furnachia1,wpt_laenor-furnachia,wpt_laenor7,wpt_laenor8,wpt_laenor9,wpt_daerwon
-;/set furn_luce=wpt_furnachia2,wpt_furnachia1,wpt_laenor-furnachia,wpt_laenor7,wpt_laenor8,wpt_laenor9,wpt_laenor-lucentium,wpt_lucentium1
-;/set furn_roth=wpt_furnachia2,wpt_furnachia1,wpt_laenor-furnachia,wpt_laenor7,wpt_laenor8,wpt_laenor9,wpt_daerwon,wpt_laenor1,wpt_laenor2,wpt_laenor3,wpt_laenor10,wpt_rothikgen1
-;/set laen_deso=wpt_daerwon,wpt_desolathya-lucentium1,wpt_desolathya3,wpt_windhamkeep
-;/set laen_furn=wpt_daerwon,wpt_laenor9,wpt_laenor8,wpt_laenor7,wpt_laenor-furnachia,wpt_furnachia1,wpt_furnachia2
-;/set laen_luce=wpt_daerwon,wpt_laenor-lucentium,wpt_lucentium1
-;/set laen_roth=wpt_daerwon,wpt_laenor1,wpt_laenor2,wpt_laenor3,wpt_laenor10,wpt_rothikgen1
-;/set roth_deso=wpt_rothikgen1,wpt_laenor10,wpt_laenor3,wpt_laenor2,wpt_laenor1,wpt_daerwon,wpt_desolathya-lucentium1,wpt_desolathya3,wpt_windhamkeep
-;/set roth_furn=wpt_rothikgen1,wpt_laenor10,wpt_laenor3,wpt_laenor2,wpt_laenor1,wpt_daerwon,wpt_laenor9,wpt_laenor8,wpt_laenor7,wpt_laenor-furnachia,wpt_furnachia1,wpt_furnachia2
-;/set roth_laen=wpt_rothikgen1,wpt_laenor10,wpt_laenor3,wpt_laenor2,wpt_laenor1,wpt_daerwon
-;/set roth_luce=wpt_rothikgen1,wpt_laenor10,wpt_laenor3,wpt_laenor2,wpt_laenor1,wpt_daerwon,wpt_laenor-lucentium,wpt_lucentium1
 
 ; Set this if the scroll name is different than the area name
 /set dest_luce_ferry=wpt_lucentium1
 /set dest_laen_ferry=wpt_daerwon
 /set dest_deso_ferry=wpt_windhamkeep
-/set dest_roth_ferry=wpt_rothikgen1
+;/set dest_roth_ferry=wpt_rothikgen1
 /set dest_furn_ferry=wpt_furnachia2
 ;/set dest_lorenchia=lorenchia_harbor
 ;/set dest_shadowkeep=shadowkeep_harbor
 
-; Set area continents for locations not in the area database ( like pcities )
-/set areacont_sc=laen
-/set areacont_rsf=luce
-/set areacont_crabfroth=roth
-/set alias_crab=crabfroth
-
 
 /def -i sellall = \
     /let curloc=%;\
-    /test curloc := get_cur_loc()%;\
+    /test curloc := ship_cur_loc()%;\
     /eval d;get all coins;u%;\
     /eval gagoutput set look_on_move off%;\
     /if ( curloc =~ "lorenchia_harbor" ) \
@@ -308,10 +242,6 @@
         /echo -aBCYellow Unknown location for sellall%;\
     /endif%;\
     /eval gagoutput set look_on_move on
-
-
-
-
 
 
 /DEF -mregexp -F -i -t"^This tiny disc is little more than a" ship_disc1_sub = /ECHO -p @{BCwhite}Disc 1@{n}

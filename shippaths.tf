@@ -80,7 +80,10 @@
     /result newnode
 
 
-; Add link to each waypoint that is on the same continent
+; Add link to each waypoint that is on the same continent.
+; If you are in deepsea, add links to all waypoints.
+; If you are currently on a tradeline (ship_on_tradeline=1) then the cost between
+; the two ends of the tradeline (ship_cur_loc, ship_next_loc) is reduced.
 /def -i pf_add_curloc_links = \
     /let nodes=%1%;\
     /let curnode=%2%;\
@@ -93,8 +96,14 @@
     /test count := get_array_count( nodes )%;\
     /while ( i <= count ) \
         /test node := get_array( nodes, i )%;\
-        /if ( node !~ curnode & get_array_val( node, "cont" ) =~ cont ) \
+        /if ( node !~ curnode & ( cont =~ "deepsea" | get_array_val( node, "cont" ) =~ cont ) ) \
 	    /test cost := pf_calculate_cost( curnode, node )%;\
+	    /if ( ship_on_tradeline == 1 ) \
+	        /let name=$[get_array_val( node, "name" )]%;\
+		/if ( name =~ ship_cur_loc | name =~ ship_next_loc ) \
+		    /test cost := ceil( cost / TRADELINE_BONUS )%;\
+		/endif%;\
+	    /endif%;\
 	    /test link := add_array( curnode, "links" )%;\
 	    /test set_array_val( link, "dest", i )%;\
 	    /test set_array_val( link, "cost", cost )%;\
