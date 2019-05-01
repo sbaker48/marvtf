@@ -56,7 +56,7 @@
 /test addprot("UNP", "Unpain", "You feel your will getting stronger.", "You feel your will returning to normal.", 0)
 /test addprot("BOT", "Blessing of Tarmalen", "You feel strong - like you could carry the whole flat world on your back!", "You feel weaker.", 0)
 /test addprot("LIGHT", "See the light", "Wow! Suddenly you see the Light!", "You no longer see the light!", 0)
-/test addprot("REGE", "Regeneration", "You feel your metabolism speed up.", "You no longer have a active regeneration spell on you.", 0)
+/test addprot("REGEN", "Regeneration", "You feel your metabolism speed up.", "You no longer have an active regeneration spell on you.", 0)
 /test addprot("FLEX", "Flex Shield", "You sense a flex shield covering your body like a second skin.", "Your flex shield wobbles, PINGs and vanishes.", 0)
 /test addprot("EPOWER", "Earth Power", "You feel your strength changing. You flex you muscles experimentally.", "The runic sigla \\\'% !^\\\' fade away.. leaving you feeling strange.", 0)
 /test addprot("EBLOOD", "Earth Blood", "An icy chill runs through your veins.", "The runic sigla \\\'!( \*)\\\' fade away.. leaving you feeling strange.", 0)
@@ -75,18 +75,19 @@
 /test addprot("FFISTS", "Flame Fists", "Your fists are surrounded by Curath\\\'s black flames!", "Your flaming fists disappear.", 0)
 /test addprot("MINORP", "Minor Protection", "You feel slightly protected.", "The minor protection fades away.", 0)
 /test addprot("ZOOP", "Zoological Protection", "You feel protected from animals.", "The zoological protection fades away.", 0)
-/test addprot("CRYZOOP", "Cryptozoological Protection", "You feel protected from mythical creatures.", "The cryptozoological protection fades away.", 0)
-/test addprot("KINEP", "Kinemortological Protection", "You feel protected from undead creatures.", "The kinemortological protection fades away.", 0)
-/test addprot_regexp("RACP", "Racial Protection", "^You feel protected from (?!animals)[a-z]*s\.\$", "^The racial protection fades away\.\$", 0)
+/test addprot("CRYZOOP", "Cryptozoological protection", "You feel protected from mythical creatures.", "The cryptozoological protection fades away.", 0)
+/test addprot("KINEP", "Kinemortological protection", "You feel protected from undead creatures.", "The kinemortological protection fades away.", 0)
+/test addprot_regexp("RACP", "Racial protection", "^You feel protected from (?!animals)[a-z]*s\.\$", "^The racial protection fades away\.\$", 0)
 /test addprot("RAGE", "Destructive rage", "A veiled darkness descends over your eyes.  Sounds are oddly distorted, and", "Your massive build-up of rage slowly dissipates leaving you drained and", 0)
-/test addprot("SDRAIN", "Spirit Drain", "You draw some of *\\\'s spirit and use it to bolster your own!", "The effects of the spirit drain leave you.", 0)
+/test addprot("SDRAIN", "Spirit drain", "You draw some of *\\\'s spirit and use it to bolster your own!", "The effects of the spirit drain leave you.", 0)
 /test addprot("ENRAGE", "Enrage", "You start hooting and howling loudly and begin hopping around.", "You no longer feel enraged.", 0)
 /test addprot("PAIN", "Pain threshold", "You begin to concentrate on pain threshold.", "Your concentration breaks and you feel less protected from physical damage.", 0)
 /test addprot("GLORY", "Glory of destruction", "Your body swells in anticipation of the battles to come.", "The destructive forces leave your body.", 0)
-/test addprot("SUPPRESS", "Suppress Magic", "Your feel excruciating pain in your head.", "You feel relieved.", 0)
+/test addprot("SUPPRESS", "Suppress magic", "Your feel excruciating pain in your head.", "You feel relieved.", 0)
 /test addprot("FORGET", "Forget", "You feel rather empty-headed.", "A fog lifts from your mind. You can remember things clearly now.", 0)
 /test addprot("HALLU", "Hallucination", "* looks at you mesmerizingly.  The world around you changes.", "Your mind clears.", 0)
 
+/test addprot("AOA", "Armour of aether", "You see a crystal clear shield fade into existance around you.", "Your crystal clear shield fades out.", 0)
 
 /def -i -F -t'You perform the ceremony.' cer1 = /addstatus CER
 /def -i -F -aBCblue -t'You have an unusual feeling as you cast the spell.' cer2 = /rmstatus CER
@@ -160,12 +161,11 @@
     /endif
 
 /def -i get_disc_time = \
-    /def -i -n1 -mregexp -t'floating about (.*) centimetres' disctime0 = /disc_time_update %{P1}%;\
+    /def -i -n1 -mregexp -t'floating about ([0-9]*) centimetres' disctime0 = /disc_time_update %%{P1}%;\
     @@grep "centimetres" l at my disc
 
 /def -i -F -t'You summon a floating disc that starts following you.' discload1 = /get_disc_time
 /def -i -F -t'You reload magical energy to the disc that is floating in the air.' discload2 = /get_disc_time
-
 
 ; Spawn timer
 

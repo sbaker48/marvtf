@@ -17,7 +17,7 @@
 
 ; Configurable parameters for the status line. Set these in your .tfrc (or wherever) to customize the colors of the status line.
 /set status_stats_color=white
-/set status_stats_attr=B
+/set status_stats_attr=
 /set status_command_color=cyan
 /set status_command_attr=B
 /set status_effects_color=yellow
@@ -95,13 +95,13 @@
 /def -i -F -ag -p8 -mregexp -t'^You are casting \'(.+)\'\.$' cmdstatus1 = /set statuscmd=cast '%P1'
 /def -i -F -ag -p8 -mregexp -t'^You are using \'(.+)\'\.$' cmdstatus2 = /set statuscmd=use '%P1'
 /def -i -F -p8 -t'You are not doing anything at the moment.' cmdstatus3 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'You are prepared to do the skill.' cmdstatus4 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'You are done with the chant.' cmdstatus5 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'You interrupt the spell.' cmdstatus6 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'You break your skill attempt.' cmdstatus7 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'You do not have enough spell points to cast the spell.' cmdstatus8 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'Your movement prevents you from casting the spell.' cmdstatus9 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'Your movement prevents you from doing the skill.' cmdstatus10 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'You lose your concentration and cannot do the skill.' cmdstatus11 = /set statuscmd=
-/def -i -F -p8 -aBCGreen -t'You lose your concentration and cannot cast the spell.' cmdstatus12 = /set statuscmd=
+/def -i -F -p8 -aCGreen -t'You are prepared to do the skill.' cmdstatus4 = /set statuscmd=
+/def -i -F -p8 -aCGreen -t'You are done with the chant.' cmdstatus5 = /set statuscmd=
+/def -i -F -p8 -aCYellow -t'You interrupt the spell.' cmdstatus6 = /set statuscmd=
+/def -i -F -p8 -aCYellow -t'You break your skill attempt.' cmdstatus7 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'You do not have enough spell points to cast the spell.' cmdstatus8 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'Your movement prevents you from casting the spell.' cmdstatus9 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'Your movement prevents you from doing the skill.' cmdstatus10 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'You lose your concentration and cannot do the skill.' cmdstatus11 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'You lose your concentration and cannot cast the spell.' cmdstatus12 = /set statuscmd=
 

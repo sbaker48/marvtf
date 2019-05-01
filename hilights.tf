@@ -15,6 +15,7 @@
 /def -i -F -aBCGreen -t'You are no longer stunned.' stun1x
 /def -i -F -aBCGreen -t'...BUT you break it off with intense concentration.' stun2x
 /def -i -F -aBCGreen -t'...BUT you break it off.' stun3x
+/def -i -F -aBCGreen -t'Your inner strength keeps your head clear!' stun4x
 
 /def -i -F -aBCGreen -t'Your attack causes * to lose focus slightly.' stunned1 = /echo -aBCGreen **STUN 1**
 /def -i -F -aBCGreen -t'You hurt * who seems to become somewhat confused.' stunned2 = /echo -aBCGreen **STUN 2**
@@ -64,14 +65,14 @@
 /def -i -F -aBCMagenta -t'* is in very bad shape.' shape7
 /def -i -F -aBCRed -t'* is near death.' shape8
 
-/def -i -F -aBCBlue -t'* is in excellent shape ([0-9]*%).' shape1a
-/def -i -F -aBCCyan -t'* is in a good shape ([0-9]*%).' shape2a
-/def -i -F -aCGreen -t'* is slightly hurt ([0-9]*%).' shape3a
-/def -i -F -aBCGreen -t'* is noticeably hurt ([0-9]*%).' shape4a
-/def -i -F -aCYellow -t'* is not in a good shape ([0-9]*%).' shape5a
-/def -i -F -aBCYellow -t'* is in bad shape ([0-9]*%).' shape6a
-/def -i -F -aBCMagenta -t'* is in very bad shape ([0-9]*%).' shape7a
-/def -i -F -aBCRed -t'* is near death ([0-9]*%).' shape8a
+/def -i -F -aBCBlue -t'* is in excellent shape ([0-9]*%)*' shape1a
+/def -i -F -aBCCyan -t'* is in a good shape ([0-9]*%)*' shape2a
+/def -i -F -aCGreen -t'* is slightly hurt ([0-9]*%)*' shape3a
+/def -i -F -aBCGreen -t'* is noticeably hurt ([0-9]*%)*' shape4a
+/def -i -F -aCYellow -t'* is not in a good shape ([0-9]*%)*' shape5a
+/def -i -F -aBCYellow -t'* is in bad shape ([0-9]*%)*' shape6a
+/def -i -F -aBCMagenta -t'* is in very bad shape ([0-9]*%)*' shape7a
+/def -i -F -aBCRed -t'* is near death ([0-9]*%)*' shape8a
 
 /def -i -F -aBCBlue -t'* (in excellent shape)' shape1p
 /def -i -F -aBCCyan -t'* (in a good shape)' shape2p

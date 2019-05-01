@@ -3,13 +3,14 @@
 /require marvtf/whereami.tf
 /require marvtf/areadata.tf
 /require marvtf/shippaths.tf
+/require marvtf/timer.tf
 
 /set shipname=binkley
 
 ; Ship events
 /def -i -F -t'There is a ripple in space, and after a moment, the ship * appears.' ship_summon = /trigger SHIP_SUMMON
 /def -i -F -t'The crew rescue you!' ship_rescue = /trigger SHIP_RESCUE
-/def -i -F -t'[A-Z]* tells you \'Bringin\' tha ship to a halt.\'' ship_halt = /trigger SHIP_SAIL_DONE
+/def -i -F -t'[A-Z]* tells you \'Bringin\' tha ship to a halt.\'' ship_halt = /trigger SHIP_SAIL_DONE%;/timer_stop SAIL
 /def -i -F -t'[A-Z]* tells you \'Comin\' to a stop, *' ship_stop = /trigger SHIP_SAIL_STOP
 /def -i -F -t'[A-Z]* tells you \'I am sorry, *, but I don\'t know where * is\\!\'' ship_fail = /trigger SHIP_SAIL_FAIL
 /def -i -F -t'[A-Z]* tells you \'We\'ve arr\'ved at signal, *' ship_arrive = /trigger SHIP_ARRIVE_SIGNAL
@@ -17,20 +18,26 @@
 /def -i -F -t'[A-Z]* tells you \'Your hull is already fully repaired\\!\'' ship_repair_none = /trigger SHIP_REPAIR_DONE
 
 ; Ship event handling
-/def -i -F -t'SHIP_SUMMON' on_ship_summon = whereami%;/repeat -1 1 console info condition
-/def -i -F -t'SHIP_RESCUE' on_ship_rescue = whereami%;/repeat -1 1 console info condition
-/def -i -F -t'SHIP_SAIL_DONE' on_ship_sail_done = whereami%;view%;/repeat -1 1 console info condition
-/def -i -F -t'SHIP_SAIL_STOP' on_ship_sail_stop = whereami%;view
-/def -i -F -t'SHIP_SAIL_FAIL' on_ship_sail_fail = whereami%;view
-/def -i -F -t'SHIP_ARRIVE_SIGNAL' on_ship_arrive_signal = /repeat -1 1 rescue %{shipname}
-/def -i -F -t'SHIP_REPAIR_DONE' on_repair_done = /repeat -3 1 sailor gangway raise
+/def -i -F -t'SHIP_SUMMON' on_ship_summon = @@whereami%;/repeat -1 1 @@console info condition
+/def -i -F -t'SHIP_RESCUE' on_ship_rescue = @@whereami%;/repeat -1 1 @@console info condition
+/def -i -F -t'SHIP_SAIL_DONE' on_ship_sail_done = @@whereami%;@@view%;/repeat -1 1 @@console info condition
+/def -i -F -t'SHIP_SAIL_STOP' on_ship_sail_stop = @@whereami%;@@view
+/def -i -F -t'SHIP_SAIL_FAIL' on_ship_sail_fail = @@whereami%;@@view
+/def -i -F -t'SHIP_ARRIVE_SIGNAL' on_ship_arrive_signal = /repeat -1 1 @@rescue %{shipname}
+/def -i -F -t'SHIP_REPAIR_DONE' on_repair_done = /repeat -3 1 @@sailor gangway raise
+
+
+/def -i -F -t'[A-z]* tells you \'That\'s quite a list of destinations - I\'ll keep track of as many as possible*' ship_cruise_long = /set ship_cruise_repeat=1
+/def -i -F -E"{ship_cruise_repeat}==1" -mregexp -t'^[A-Z][a-z]* tells you \'Continuin\' on ta (.*)\\.\'' ship_cruise_long2 = /set ship_cruise_repeat=0%;/repeat -5 1 /sail3 %{sail_dest}
 
 /def -i sail = \
+    /set sail_dest=%*%;\
     /def -n1 -t'HELM' helm_done = /sail2 %*%;\
     /move_to_helm
 
 /def -i sail2 = \
     /def -n1 -t'LAUNCH' launch_done = /sail3 %*%;\
+    /timer_start SAIL%;\
     /launch
 
 /def -i sail3 = \
@@ -41,14 +48,14 @@
 
 /def -i move_to_helm = \
     /def -n1 -t'WHEREAMI' = /move_to_helm2%;\
-    whereami
+    @@whereami
 
 /def -i move_to_helm2 = \
     /if ( substr( area, strlen( area ) - 6, 6 ) !~ "(ship)" ) \
         /echo #####  NOT ON SHIP!  #####%;\
-    /elseif ( ( room =~ "main deck" ) | ( substr( {room}, 0, 11 ) =~ "(main deck)" ) ) \
+    /elseif ( ( room =~ "main deck" ) | ( substr( room, 0, 11 ) =~ "(main deck)" ) ) \
         3 gagoutput aft%;\
-    /elseif ( room =~ "cargo hold" ) \
+    /elseif ( room =~ "cargo hold" | ( substr( room, 0, 12 ) =~ "(cargo hold)" ) ) \
         5 gagoutput aft;u%;\
     /elseif ( room =~ "captain's cabin" ) \
         deck%;\
@@ -145,6 +152,7 @@
     /elseif ( gcoord_x == 9592 & gcoord_y ==  9427 ) /let curloc=furn_ferry%;\
     /elseif ( gcoord_x == 7970 & gcoord_y == 10687 ) /let curloc=lorenchia_harbor%;\
     /elseif ( gcoord_x == 9726 & gcoord_y ==  7205 ) /let curloc=shadowkeep_harbor%;\
+    /elseif ( gcoord_x == 8557 & gcoord_y ==  8666 ) /let curloc=arelium_harbor%;\
     /elseif ( gcoord_x == 8097 & gcoord_y == 10775 ) /let curloc=silverlake%;\
     /elseif ( gcoord_x == 7998 & gcoord_y == 10814 ) /let curloc=oystria%;\
     /elseif ( gcoord_x == 9651 & gcoord_y ==  7186 ) /let curloc=crabfroth%;\
@@ -161,6 +169,7 @@
 /set launch_furn_ferry=w
 /set launch_lorenchia_harbor=sea
 /set launch_shadowkeep_harbor=river
+/set launch_arelium_harbor=2 n
 /set launch_silverlake=2 n
 ; pcity harbors
 /set launch_rsf=2 n
@@ -174,6 +183,7 @@
 /set dock_furn_ferry=2 *e
 /set dock_lorenchia_harbor=*e
 /set dock_shadowkeep_harbor=*n
+/set dock_arelium_harbor=2 *s
 /set dock_silverlake=2 *s
 /set dock_oystria=*whirlpool
 ; pcity harbors
@@ -197,7 +207,7 @@
     /eval d;get all coins;u%;\
     /eval gagoutput set look_on_move off%;\
     /if ( curloc =~ "lorenchia_harbor" ) \
-        /eval shipout e;3 e;2 E;e;3 ne;2 e;n;manifest %{shipname}%;\
+        /eval gangway e;gangway;3 e;2 E;e;3 ne;2 e;n;manifest %{shipname}%;\
         /eval y%;\
         /eval s;9 e;n;manifest %{shipname}%;\
         /eval y%;\
@@ -205,15 +215,27 @@
         /eval y%;\
         /eval s;14 w;n;deposit change;s;W;3 w;%{shipname}%;\
     /elseif ( curloc =~ "shadowkeep_harbor" ) \
-        /eval shipout n;n;3 e;3 n;2 w;s;manifest %{shipname}%;\
+        /eval gangway n;gangway;n;3 e;3 n;2 w;s;manifest %{shipname}%;\
         /eval y%;\
         /eval n;2 w;n;w;manifest %{shipname}%;\
         /eval y%;\
         /eval e;3 n;2 w;s;manifest %{shipname}%;\
         /eval y%;\
         /eval n;2 e;4 s;w;s;deposit change;n;w;3 s;3 e;s;%{shipname}%;\
+    /elseif ( curloc =~ "arelium_harbor" )\
+        /eval gangway e;gangway;S;se;S;4 s;13 w;n;manifest %{shipname}%;\
+	/eval y%;\
+	/eval 3 s;manifest %{shipname}%;\
+	/eval y%;\
+	/eval n;3 w;3 s;e;manifest %{shipname}%;\
+	/eval y%;\
+	/eval w;4 s;2 sw;w;n;manifest %{shipname}%;\
+	/eval y%;\
+	/eval s;14 e;ne;n;manifest %{shipname}%;\
+	/eval y%;\
+	/eval s;3 w;nw;6 n;2 nw;11 w;n;deposit change;s;E;e;N;N;n;nw;7 n;%{shipname}%;\
     /elseif ( curloc =~ "deso_ferry" ) \
-        /eval shipout w;4 w;n;manifest %{shipname}%;\
+        /eval gangway w;gangway;4 w;n;manifest %{shipname}%;\
         /eval y%;\
         /eval s;2 w;n;manifest %{shipname}%;\
         /eval y%;\
@@ -221,7 +243,7 @@
         /eval y%;\
         /eval e;n;7 e;%{shipname}%;\
     /elseif ( curloc =~ "furn_ferry" ) \
-        /eval shipout e;3 s;2 se;14 e;E;E;6 s;e;manifest %{shipname}%;\
+        /eval gangway e;gangway;3 s;2 se;14 e;E;E;6 s;e;manifest %{shipname}%;\
         /eval y%;\
         /eval w;3 sw;s;e;manifest %{shipname}%;\
         /eval y%;\
@@ -229,7 +251,7 @@
         /eval y%;\
         /eval n;N;W;6 w;3 nw;3 n;w;deposit change;e;6 s;W;6 w;2 nw;3 n;%{shipname}%;\
     /elseif ( curloc =~ "rsf" ) \
-        /eval shipout s;2 w;3 s;manifest %{shipname}%;\
+        /eval gangway s;gangway;2 w;3 s;manifest %{shipname}%;\
         /eval y%;\
         /eval 3 n;e;manifest %{shipname}%;\
         /eval y%;\
@@ -254,4 +276,6 @@
 /DEF -mregexp -F -i -t"^This disc is really a very large ring" ship_disc8_sub = /ECHO -p @{BCwhite}Disc 9@{n}
 /DEF -mregexp -F -i -t"^This disc is really a huge ring" ship_disc9_sub = /ECHO -p @{BCwhite}Disc 9@{n}
 /DEF -mregexp -F -i -t"^This disc is really a massive ring" ship_disc10_sub = /ECHO -p @{BCwhite}Disc 10@{n}
+
+/def -i -t'You gained * Merchant Navy reputation.' ship_rep = @@sailor reputation
 

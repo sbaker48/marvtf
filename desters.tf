@@ -112,9 +112,13 @@
 
 
 
-
-
-
-
+; Not desters, but still annoying
 /def -i -F -q -t"a tower warrior of Tariel's forces" banish1 = /substitute -p %* @{Cred}[BANISH]@{n}
 /def -i -F -q -t"a plump, middle-aged leopard catfolk sits at the desk" banish2 = /substitute -p %* @{Cred}[BANISH]@{n}
+/def -i -F -q -t"Hera, Zeus's wife" banish3 = /substitute -p %* @{Cred}[BANISH]@{n}
+/def -i -F -q -t"Sarah Greenpond the old widow" banish4 = /substitute -p %* @{Cred}[BANISH]@{n}
+/def -i -F -q -t"Zellsquish, one of the unfettered" banish5 = /substitute -p %* @{Cred}[BANISH]@{n}
+/def -i -F -q -t"Divolg the high bailiff" banish6 = /substitute -p %* @{Cred}[BANISH]@{n}
+/def -i -F -q -t"the ugliest drow guard" banish7 = /substitute -p %* @{Cred}[BANISH]@{n}
+/def -i -F -q -t"Alfons Farson, the innkeeper of Oakvale" banish8 = /substitute -p %* @{Cred}[BANISH]@{n}
+

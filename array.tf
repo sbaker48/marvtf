@@ -230,39 +230,37 @@
     /endif
 
 
-/def array_test = \
-    /purge_array wpt%;\
-    /test wptarr := make_array( "wpt" )%;\
-    /eval /echo wptarr = %wptarr%;\
-    /test wptarr2 := add_array( wptarr )%;\
-    /eval /echo wptarr2 = %wptarr2%;\
-    /test set_array_val( wptarr2, "name", "laenor1" )%;\
-    /test set_array_val( wptarr2, "cont", "laen" )%;\
-    /test set_array_val( wptarr2, "x", 8442 )%;\
-    /test set_array_val( wptarr2, "y", 8502 )%;\
-    /test connarr := make_array( wptarr2, "connection" )%;\
-    /eval /echo connarr = %connarr%;\
-    /test connarr2 := add_array( connarr )%;\
-    /eval /echo connarr2 = %connarr2%;\
-    /test set_array_val( connarr2, "dest", 2 )%;\
-    /test set_array_val( connarr2, "cost", 240 )%;\
-    /test connarr2 := add_array( connarr )%;\
-    /eval /echo connarr2 = %connarr2%;\
-    /test set_array_val( connarr2, "dest", 11 )%;\
-    /test set_array_val( connarr2, "cost", 50 )%;\
-    /listvar ARRAY_*%;\
-    /listvar ARCNT_*%;\
-    /if ( get_array_count( "wpt" ) == 1 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_count( wptarr ) == 1 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_val( "wpt", 1, "name" ) =~ "laenor1" ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_val( "wpt", 1, "cont" ) =~ "laen" ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_val( wptarr2, "x" ) == 8442 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_val( wptarr2, "y" ) == 8502 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_count( "wpt", 1, "connection" ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_count( connarr ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_val( "wpt", 1, "connection", 1, "dest" ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_val( "wpt", 1, "connection", 1, "cost" ) == 240 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /if ( get_array_val( "wpt", 1, "connection", 2, "dest" ) == 11 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-    /IF ( get_array_val( connarr2, "cost" ) == 50 ) /echo PASS%;/else /echo FAIL%;/endif
-
-
+;/def array_test = \
+;    /purge_array wpt%;\
+;    /test wptarr := make_array( "wpt" )%;\
+;    /eval /echo wptarr = %wptarr%;\
+;    /test wptarr2 := add_array( wptarr )%;\
+;    /eval /echo wptarr2 = %wptarr2%;\
+;    /test set_array_val( wptarr2, "name", "laenor1" )%;\
+;    /test set_array_val( wptarr2, "cont", "laen" )%;\
+;    /test set_array_val( wptarr2, "x", 8442 )%;\
+;    /test set_array_val( wptarr2, "y", 8502 )%;\
+;    /test connarr := make_array( wptarr2, "connection" )%;\
+;    /eval /echo connarr = %connarr%;\
+;    /test connarr2 := add_array( connarr )%;\
+;    /eval /echo connarr2 = %connarr2%;\
+;    /test set_array_val( connarr2, "dest", 2 )%;\
+;    /test set_array_val( connarr2, "cost", 240 )%;\
+;    /test connarr2 := add_array( connarr )%;\
+;    /eval /echo connarr2 = %connarr2%;\
+;    /test set_array_val( connarr2, "dest", 11 )%;\
+;    /test set_array_val( connarr2, "cost", 50 )%;\
+;    /listvar ARRAY_*%;\
+;    /listvar ARCNT_*%;\
+;    /if ( get_array_count( "wpt" ) == 1 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_count( wptarr ) == 1 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_val( "wpt", 1, "name" ) =~ "laenor1" ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_val( "wpt", 1, "cont" ) =~ "laen" ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_val( wptarr2, "x" ) == 8442 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_val( wptarr2, "y" ) == 8502 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_count( "wpt", 1, "connection" ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_count( connarr ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_val( "wpt", 1, "connection", 1, "dest" ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_val( "wpt", 1, "connection", 1, "cost" ) == 240 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_val( "wpt", 1, "connection", 2, "dest" ) == 11 ) /echo PASS%;/else /echo FAIL%;/endif%;\
+;    /if ( get_array_val( connarr2, "cost" ) == 50 ) /echo PASS%;/else /echo FAIL%;/endif

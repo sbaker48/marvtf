@@ -139,8 +139,8 @@
     /test ref := make_array( "wpt", num )%;\
     /test set_array_val( ref, "name", strcat( "wpt_", name ) )%;\
     /test set_array_val( ref, "cont", scont )%;\
-    /test set_array_val( ref, "x", xcoord )%;\
-    /test set_array_val( ref, "y", ycoord )%;\
+    /test set_array_val( ref, "gx", xcoord )%;\
+    /test set_array_val( ref, "gy", ycoord )%;\
     /test add_array_val( "wpt", scont, ref )
 
 /def -i add_wpt_link = \
