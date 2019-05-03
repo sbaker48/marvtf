@@ -1,22 +1,29 @@
 /loaded marvtf/array.tf
 
+;
+; A tinyfugue module for creating global arrays.
+;
+
 ; /make_array name
-;     Creates a new array with the given name. Returns a reference to the new
-;     array.
+;     Creates a new array with the given name. Array names can consist of letters
+;     and numbers and are case sensitive. Underscores in array names are allowed,
+;     but strongly discouraged. Returns a reference to the new array.
+;     Note: All arrays are 'global', meaning that array names are not unique to
+;     any module or scope, and and two different arrays cannot have the same name.
 ;
-; /make_array arref subname
 ; /make_array name [index1..indexN] subname
-;     Creates a new sub-array with the given name to an existing array. The
-;     existing array can be referenced by 'arref', or by the name of the array
-;     and any number of indexes to existing sub-arrays. Returns a reference to
-;     the new array.
+; /make_array arref subname
+;     Creates a new sub-array with the given name to an existing array.
+;     The parent array can be given by its reference value, or by the name
+;     of the root array and and any number of indexes to existing sub-arrays.
+;     Returns a reference to the new array.
 ;
-; /add_array arref
 ; /add_array name [index1..indexN]
+; /add_array arref
 ;     Adds a new sub-array to the end of an existing array or sub-array. This
 ;     is similar to /make_array, except that the index of the array is
-;     automatically set to the next available number ( the highest used number
-;     + 1 ). Array indexes start at 1. Returns a reference to the new array.
+;     automatically set to the next available number (the highest used number
+;     + 1). Array indexes start at 1. Returns a reference to the new array.
 ;
 ; /get_array name
 ; /get_array arref subname|index
@@ -33,8 +40,8 @@
 ; /add_array_val name [index1..indexN] value
 ;     Adds a new array entry to the end of an existing array or sub-array. This
 ;     is similar to /set_array_val, except that the index of the entry is
-;     automatically set to the next available number ( the highest used number
-;     + 1 ). Array indexes start at 1.
+;     automatically set to the next available number (the highest used number + 1).
+;     Array indexes start at 1.
 ;
 ; /get_array_val arref index
 ; /get_array_val name [index1..indexN] index
@@ -56,24 +63,95 @@
 ;
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;   EXAMPLE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; To create the following array:
+; 
+;     "areas": [
+;         "diggas": [
+;             "continent": "laen",
+;             "x": 289,
+;             "y": 474,
+;         ],
+;         "soy": [
+;             "continent": "deso",
+;             "x": 166,
+;             "y": 356,
+;         ],
+;         "cashareas": [
+;             1: "drawbridge",
+;             2: "two_towers",
+;         ]
+;     ]
+; 
+; Either of the following forms can be used:
+; 
+; /make_array areas
+; /make_array areas diggas
+; /set_array_val areas diggas continent laen
+; /set_array_val areas diggas x 289
+; /set_array_val areas diggas y 474
+; /make_array areas soy
+; /set_array_val areas soy continent deso
+; /set_array_val areas soy x 166
+; /set_array_val areas soy y 356
+; /make_array areas cashareas
+; /add_array_val areas cashareas drawbridge
+; /add_array_val areas cashareas two_towers
+; 
+;     --or--
+; 
+; /test arealist := make_array("areas")
+; /test area := make_array(arealist, "diggas")
+; /test set_array_val(area, "continent", "laen")
+; /test set_array_val(area, "x", 289)
+; /test set_array_val(area, "y", 474)
+; /test area := make_array(arealist, "soy")
+; /test set_array_val(area, "continent", "deso")
+; /test set_array_val(area, "x", 166)
+; /test set_array_val(area, "y", 356)
+; /test cash_areas := make_array(arealist, "cashareas")
+; /test add_array_val(cash_areas, "drawbridge")
+; /test add_array_val(cash_areas, "two_towers")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ; /make_array name
-; /make_array arref subname
-; /make_array name [index1..indexN] subname
+; /make_array arref subname|index
+; /make_array name [index1..indexN] subname|index
 /def -i make_array = \
-    /let arref=%;\
-    /let arcnt=%;\
+    /let arref=$[_to_arref({*})]%;\
+    /let arcnt=$[_to_arcnt({-L1})]%;\
     /let index=%L1%;\
-    /test arref := to_arref( {*} )%;\
-    /if ( arref =~ "" ) \
+    /if (arref =~ "") \
         /echo %0: Bad argument (%*)%;\
         /return ""%;\
     /endif%;\
-    /if ( {#} > 1 ) \
-        /test arcnt := to_arcnt( {-L1} )%;\
-        /if /test index > {%arcnt}%; /then \
+    /if ({#} > 1) \
+        /let count=%;\
+        /test count := %arcnt%;\
+        /if (index > count) \
             /test %arcnt := index%;\
         /endif%;\
     /endif%;\
+    /result arref
+
+
+; /add_array arref
+; /add_array name [index1..indexN]
+/def -i add_array = \
+    /let arcnt=$[_to_arcnt({*})]%;\
+    /if (arcnt =~ "") \
+        /echo %0: Bad argument (%*)%;\
+        /return ""%;\
+    /endif%;\
+    /let index=%;\
+    /test index := 1 + %arcnt%;\
+    /test %arcnt := index%;\
+    /let arref=$[_to_arref({*}, index)]%;\
     /result arref
 
 
@@ -81,39 +159,29 @@
 ; /get_array arref subname|index
 ; /get_array name [index1..indexN] subname|index
 /def -i get_array = \
-    /result make_array( {*} )
-
-
-; /add_array arref
-; /add_array name [index1..indexN]
-/def -i add_array = \
-    /let arcnt=%;\
-    /let index=%;\
-    /test arcnt := to_arcnt( {*} )%;\
-    /if ( arcnt =~ "" ) \
+    /let arref=$[_to_arref({*})]%;\
+    /if (arref =~ "") \
         /echo %0: Bad argument (%*)%;\
         /return ""%;\
     /endif%;\
-    /test index := 1 + %arcnt%;\
-    /test %arcnt := index%;\
-    /result to_arref( {*}, index )
+    /result arref
 
 
 ; /set_array_val arref index value
 ; /set_array_val name [index1..indexN] index value
 /def -i set_array_val = \
-    /let arref=%;\
-    /let arcnt=%;\
+    /let arref=$[_to_arref({-L1})]%;\
+    /let arcnt=$[_to_arcnt({-L2})]%;\
     /let index=%L2%;\
     /let value=%L1%;\
-    /test arref := to_arref( {-L1} )%;\
-    /test arcnt := to_arcnt( {-L2} )%;\
-    /if ( arref =~ "" ) \
+    /if (arref =~ "") \
         /echo %0: Bad argument (%*)%;\
         /return ""%;\
     /endif%;\
     /test %arref := value%;\
-    /if /test index > {%arcnt}%; /then \
+    /let count=%;\
+    /test count := %arcnt%;\
+    /if (index > count) \
         /test %arcnt := index%;\
     /endif
 
@@ -121,18 +189,16 @@
 ; /add_array_val arref value
 ; /add_array_val name [index1..indexN] value
 /def -i add_array_val = \
-    /let arref=%;\
-    /let arcnt=%;\
-    /let index=%;\
+    /let arcnt=$[_to_arcnt({-L1})]%;\
     /let value=%L1%;\
-    /test arcnt := to_arcnt( {-L1} )%;\
-    /if ( arcnt =~ "" ) \
+    /if (arcnt =~ "") \
         /echo %0: Bad argument (%*)%;\
         /return ""%;\
     /endif%;\
+    /let index=%;\
     /test index := 1 + %arcnt%;\
     /test %arcnt := index%;\
-    /test arref := to_arref( {-L1}, index )%;\
+    /let arref=$[_to_arref({-L1}, index)]%;\
     /test %arref := value%;\
     /result arref
 
@@ -140,39 +206,36 @@
 ; /get_array_val arref index
 ; /get_array_val name [index1..indexN] index
 /def -i get_array_val = \
-    /let arref=%;\
-    /test arref := to_arref( {*} )%;\
-    /if ( arref =~ "" ) \
+    /let arref=$[_to_arref({*})]%;\
+    /if (arref =~ "") \
         /echo %0: Bad argument (%*)%;\
         /return ""%;\
     /endif%;\
     /result %arref
 
 
-; /get_array_count
+; /get_array_count arref
+; /get_array_count name [index1..indexN]
 /def -i get_array_count = \
-    /let arcnt=%;\
-    /test arcnt := to_arcnt( {*} )%;\
-    /if ( arcnt =~ "" ) \
+    /let arcnt=$[_to_arcnt({*})]%;\
+    /if (arcnt =~ "") \
         /echo %0: Bad argument (%*)%;\
         /return ""%;\
     /endif%;\
     /result 0 + %arcnt
-    
+
 
 ; /copy_array arref1 arref2
 /def -i copy_array = \
-    /let arrfrom=%;\
-    /let arrto=%;\
-    /test arrfrom := to_arref( {1} )%;\
-    /test arrto := to_arref( {2} )%;\
-    /if ( arrfrom =~ "" | arrto =~ "" ) \
+    /let arrfrom=$[_to_arref({1})]%;\
+    /let arrto=$[_to_arref({2})]%;\
+    /if (arrfrom =~ "" | arrto =~ "") \
         /echo %0: Bad argument (%*)%;\
         /return%;\
     /endif%;\
     /quote -S /_copy_array1 %arrfrom %arrto `/listvar -s -mglob %{arrfrom}_*%;\
-    /test arrfrom := to_arcnt( arrfrom )%;\
-    /test arrto := to_arcnt( arrto )%;\
+    /test arrfrom := _to_arcnt(arrfrom)%;\
+    /test arrto := _to_arcnt(arrto)%;\
     /if /test {%arrfrom} !~ ""%; /then \
         /_copy_array1 %arrfrom %arrto %arrfrom%;\
     /endif%;\
@@ -183,84 +246,48 @@
     /let arrto=%{2}%;\
     /let var=%{-2}%;\
     /let s=%;\
-    /test s := replace( "%{arrfrom}", "%{arrto}", var )%;\
+    /test s := replace("%{arrfrom}", "%{arrto}", var)%;\
     /test %{s} := %var
 
 
 ; /purge_array name
 /def -i purge_array = \
-    /if ( {#} == 1 ) \
+    /if ({#} == 1) \
         /quote -S /unset `/listvar -mglob -s _ARRAY_%1_* %;\
         /quote -S /unset `/listvar -mglob -s _ARCNT_%1_* %;\
-	/unset _ARCNT_%1%;\
+    /unset _ARCNT_%1%;\
     /else \
-        /echo %0: Invalid number of arguments ( %* )%;\
+        /echo %0: Invalid number of arguments (%*)%;\
     /endif
 
 
 ; Helper methods
-/def -i arr_is_valid = \
+/def -i _arr_is_valid = \
     /let arref=%{*}%;\
-    /if ( regmatch( "^[A-Za-z0-9_]*$", arref ) != 0 ) \
-        /return arref%;\
+    /if (regmatch("^[A-Za-z0-9_]*$", arref) != 0) \
+        /result arref%;\
     else \
-        /return ""%;\
+        /result ""%;\
     /endif
 
-/def -i to_arref = \
+/def -i _to_arref = \
     /let arref=%;\
-    /if ( {*} =~ "" ) \
+    /if ({*} =~ "") \
         /return ""%;\
     /else \
-        /if ( substr( {1}, 0, 7 ) =~ "_ARRAY_" ) \
-            /test arref := replace( " ", "_", {*} )%;\
+        /if (substr({1}, 0, 7) =~ "_ARRAY_") \
+            /test arref := replace(" ", "_", {*})%;\
         /else \
-            /test arref := strcat( "_ARRAY_", replace( " ", "_", {*} ) )%;\
+            /test arref := strcat("_ARRAY_", replace(" ", "_", {*}))%;\
         /endif%;\
-	/result arr_is_valid( arref )%;\
+        /result _arr_is_valid(arref)%;\
     /endif
 
-/def -i to_arcnt = \
+/def -i _to_arcnt = \
     /let arref=%;\
-    /test arref := to_arref( {*} )%;\
-    /if ( arref =~ "" ) \
+    /test arref := _to_arref({*})%;\
+    /if (arref =~ "") \
         /return ""%;\
     /else \
-        /result strcat( "_ARCNT_", substr( arref, 7 ) )%;\
+        /result strcat("_ARCNT_", substr(arref, 7))%;\
     /endif
-
-
-;/def array_test = \
-;    /purge_array wpt%;\
-;    /test wptarr := make_array( "wpt" )%;\
-;    /eval /echo wptarr = %wptarr%;\
-;    /test wptarr2 := add_array( wptarr )%;\
-;    /eval /echo wptarr2 = %wptarr2%;\
-;    /test set_array_val( wptarr2, "name", "laenor1" )%;\
-;    /test set_array_val( wptarr2, "cont", "laen" )%;\
-;    /test set_array_val( wptarr2, "x", 8442 )%;\
-;    /test set_array_val( wptarr2, "y", 8502 )%;\
-;    /test connarr := make_array( wptarr2, "connection" )%;\
-;    /eval /echo connarr = %connarr%;\
-;    /test connarr2 := add_array( connarr )%;\
-;    /eval /echo connarr2 = %connarr2%;\
-;    /test set_array_val( connarr2, "dest", 2 )%;\
-;    /test set_array_val( connarr2, "cost", 240 )%;\
-;    /test connarr2 := add_array( connarr )%;\
-;    /eval /echo connarr2 = %connarr2%;\
-;    /test set_array_val( connarr2, "dest", 11 )%;\
-;    /test set_array_val( connarr2, "cost", 50 )%;\
-;    /listvar ARRAY_*%;\
-;    /listvar ARCNT_*%;\
-;    /if ( get_array_count( "wpt" ) == 1 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_count( wptarr ) == 1 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_val( "wpt", 1, "name" ) =~ "laenor1" ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_val( "wpt", 1, "cont" ) =~ "laen" ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_val( wptarr2, "x" ) == 8442 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_val( wptarr2, "y" ) == 8502 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_count( "wpt", 1, "connection" ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_count( connarr ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_val( "wpt", 1, "connection", 1, "dest" ) == 2 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_val( "wpt", 1, "connection", 1, "cost" ) == 240 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_val( "wpt", 1, "connection", 2, "dest" ) == 11 ) /echo PASS%;/else /echo FAIL%;/endif%;\
-;    /if ( get_array_val( connarr2, "cost" ) == 50 ) /echo PASS%;/else /echo FAIL%;/endif
