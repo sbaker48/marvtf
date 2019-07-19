@@ -24,7 +24,7 @@
     /set room=%P1%;\
     /set area=%P2%;\
     /set continent=%P2%;\
-    /set cont=$[tolower(substr({P2},0,4))]%;\
+    /set cont=$[tolower(substr(continent,0,4))]%;\
     /set coord_x=%P3%;\
     /set coord_y=%P4%;\
     /set gcoord_x=%P5%;\
@@ -44,7 +44,7 @@
 
 /def -i -F -p9 -ag -mregexp -t'^@COORDS@ ([A-Za-z]*) (-*[0-9]*),(-*[0-9]*)$' sc_coords = \
     /set continent=%P1%;\
-    /set cont=$[tolower(substr({P3},0,4))]%;\
+    /set cont=$[tolower(substr({P1},0,4))]%;\
     /set coord_x=%P2%;\
     /set coord_y=%P3%;\
     /if ( continent =~ "Laenor" | continent =~ "Nexus" ) \
@@ -69,5 +69,7 @@
         /set gcoord_y=$[coord_y+8192]%;\
     /else \
         /echo UNKNOWN CONTINENT FIX WHEREAMI%;\
-    /endif
+    /endif%;\
+    /trigger COORDS
+
 
