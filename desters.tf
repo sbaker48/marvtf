@@ -122,3 +122,9 @@
 /def -i -F -q -t"the ugliest drow guard" banish7 = /substitute -p %* @{Cred}[BANISH]@{n}
 /def -i -F -q -t"Alfons Farson, the innkeeper of Oakvale" banish8 = /substitute -p %* @{Cred}[BANISH]@{n}
 
+/def -i -F -q -t"a retired war strategist, drawing circles to the ground" imprison1 = /substitute -p %* @{Cred}[IMPRISONMENT]@{n}
+/def -i -F -q -t"This bureaucrat is filling out paperwork here." imprison2 = /substitute -p %* @{Cred}[IMPRISONMENT]@{n}
+/def -i -F -q -t"a burly tiger catfolk sits at the desk" imprison3 = /substitute -p %* @{Cred}[IMPRISONMENT]@{n}
+/def -i -F -q -t"A dragon Highlord is glaring at you angrily" imprison4 = /substitute -p %* @{Cred}[IMPRISONMENT]@{n}
+/def -i -F -q -t"A demon guard stands watch over the cell" imprison5 = /substitute -p %* @{Cred}[IMPRISONMENT]@{n}
+

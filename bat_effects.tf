@@ -80,7 +80,7 @@
 /test addprot_regexp("RACP", "Racial protection", "^You feel protected from (?!animals)[a-z]*s\.\$", "^The racial protection fades away\.\$", 0)
 /test addprot("RAGE", "Destructive rage", "A veiled darkness descends over your eyes.  Sounds are oddly distorted, and", "Your massive build-up of rage slowly dissipates leaving you drained and", 0)
 /test addprot("SDRAIN", "Spirit drain", "You draw some of *\\\'s spirit and use it to bolster your own!", "The effects of the spirit drain leave you.", 0)
-/test addprot("ENRAGE", "Enrage", "You start hooting and howling loudly and begin hopping around.", "You no longer feel enraged.", 0)
+/test addprot("ENRAGE", "Enrage", "You jump up and begin dancing around the room. You start hooting and howling loudly and begin hopping around.*", "You no longer feel enraged.", 0)
 /test addprot("PAIN", "Pain threshold", "You begin to concentrate on pain threshold.", "Your concentration breaks and you feel less protected from physical damage.", 0)
 /test addprot("GLORY", "Glory of destruction", "Your body swells in anticipation of the battles to come.", "The destructive forces leave your body.", 0)
 /test addprot("SUPPRESS", "Suppress magic", "Your feel excruciating pain in your head.", "You feel relieved.", 0)
