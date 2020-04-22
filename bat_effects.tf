@@ -1,16 +1,17 @@
 /require marvtf/bat_prots.tf
 
 /def -i addprot = \
-    /let stname=%{1}%;\
-    /let name=%{2}%;\
-    /let msgup=%{3}%;\
-    /let msgdn=%{4}%;\
-    /let noreport=%{5}%;\
+    /let stname=%1%;\
+    /let name=%2%;\
+    /let msgup=%3%;\
+    /let msgdn=%4%;\
+    /let noreport=%5%;\
+    /let color=%6%;\
     /if ( noreport ) \
-        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname}%;\
+        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname} %{color}%;\
         /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%;\
     /else \
-        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@@party report %{name} up%;\
+        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname} %{color}%%%;@@party report %{name} up%;\
         /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%;\
     /endif
 
@@ -83,11 +84,12 @@
 /test addprot("ENRAGE", "Enrage", "You jump up and begin dancing around the room. You start hooting and howling loudly and begin hopping around.*", "You no longer feel enraged.", 0)
 /test addprot("PAIN", "Pain threshold", "You begin to concentrate on pain threshold.", "Your concentration breaks and you feel less protected from physical damage.", 0)
 /test addprot("GLORY", "Glory of destruction", "Your body swells in anticipation of the battles to come.", "The destructive forces leave your body.", 0)
-/test addprot("SUPPRESS", "Suppress magic", "Your feel excruciating pain in your head.", "You feel relieved.", 0)
-/test addprot("FORGET", "Forget", "You feel rather empty-headed.", "A fog lifts from your mind. You can remember things clearly now.", 0)
-/test addprot("HALLU", "Hallucination", "* looks at you mesmerizingly.  The world around you changes.", "Your mind clears.", 0)
-
 /test addprot("AOA", "Armour of aether", "You see a crystal clear shield fade into existance around you.", "Your crystal clear shield fades out.", 0)
+
+/test addprot("SUPPRESS", "Suppress magic", "Your feel excruciating pain in your head.", "You feel relieved.", 0, "magenta")
+/test addprot("FORGET", "Forget", "You feel rather empty-headed.", "A fog lifts from your mind. You can remember things clearly now.", 0, "magenta")
+/test addprot("HALLU", "Hallucination", "* looks at you mesmerizingly.  The world around you changes.", "Your mind clears.", 0, "magenta")
+
 
 /def -i -F -t'You perform the ceremony.' cer1 = /addstatus CER
 /def -i -F -aBCblue -t'You have an unusual feeling as you cast the spell.' cer2 = /rmstatus CER

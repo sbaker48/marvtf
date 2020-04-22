@@ -1,7 +1,7 @@
 /def -i -F -q -t'*\'Stand confused with lack of comprehension, pagan of mine for I know of the true belief, while death calls you, compel your soul to the true belief, for I offer you this redemption in the harmony of my true belief\.\.\'*' words_Achromatic_eyes = /substitute -p %* @{Cyellow}[Achromatic eyes]@{n}
 /def -i -F -q -t'*\'fzz zur semen\'*' words_Acid_arrow = /substitute -p %* @{Cyellow}[Acid arrow]@{n} (acid3)
 /def -i -F -q -t'*\'fzz mar nak grttzt\'*' words_Acid_blast = /substitute -p %* @{Cyellow}[Acid blast]@{n} (acid5)
-/def -i -F -q -t'*\'fzz zur sanc gnatlnamauch\'*' words_Acid_rain = /substitute -p %* @{Cyellow}[Acid rain]@{n} (acid-A1)
+/def -i -F -q -t'*\'fzz zur semen gnatlnamauch\'*' words_Acid_rain = /substitute -p %* @{Cyellow}[Acid rain]@{n} (acid-A1)
 /def -i -F -q -t'*\'fzz mar nak semen\'*' words_Acid_ray = /substitute -p %* @{Cyellow}[Acid ray]@{n} (acid4)
 /def -i -F -q -t'*\'hfizz hfizz nglurglptz\'*' words_Acid_shield = /substitute -p %* @{Cyellow}[Acid shield]@{n} (acid-P2)
 /def -i -F -q -t'*\'fzz mar nak grttzt gnatlnamauch\'*' words_Acid_storm = /substitute -p %* @{Cyellow}[Acid storm]@{n} (acid-A2)
@@ -221,7 +221,7 @@
 /def -i -F -q -t'*\'vaxtextraktdryck\'*' words_Mental_glance = /substitute -p %* @{Cyellow}[Mental glance]@{n}
 /def -i -F -q -t'*\'kakakaaa tsooon\'*' words_Mental_watch = /substitute -p %* @{Cyellow}[Mental watch]@{n}
 /def -i -F -q -t'*\'fah mar nak semen\'*' words_Meteor_blast = /substitute -p %* @{Cyellow}[Meteor blast]@{n} (fire4)
-/def -i -F -q -t'*\'fah zur sanc gnatlnamauch\'*' words_Meteor_swarm = /substitute -p %* @{Cyellow}[Meteor swarm]@{n} (fire-A1)
+/def -i -F -q -t'*\'fah zur semen gnatlnamauch\'*' words_Meteor_swarm = /substitute -p %* @{Cyellow}[Meteor swarm]@{n} (fire-A1)
 /def -i -F -q -t'*\'omm zur fehh\'*' words_Mind_blast = /substitute -p %* @{Cyellow}[Mind blast]@{n}
 /def -i -F -q -t'*\'Annatheer graaweizta\'*' words_Mind_development = /substitute -p %* @{Cyellow}[Mind development]@{n}
 /def -i -F -q -t'*\'omm mar nak semen\'*' words_Mind_disruption = /substitute -p %* @{Cyellow}[Mind disruption]@{n}
@@ -360,7 +360,7 @@
 /def -i -F -q -t'*\'harnaxan temnahecne\'*' words_Unpain = /substitute -p %* @{Cyellow}[Unpain]@{n}
 /def -i -F -q -t'*\'ragus on etsat mumixam\!\'*' words_Unstable_mutation = /substitute -p %* @{Cyellow}[Unstable mutation]@{n}
 /def -i -F -q -t'*\'Paxus\'*' words_Unstun = /substitute -p %* @{Cyellow}[Unstun]@{n}
-/def -i -F -q -t'*\'ghht zur sanc gnatlnamauch\'*' words_Vacuum_ball = /substitute -p %* @{Cyellow}[Vacuum ball]@{n} (asphyx-A1)
+/def -i -F -q -t'*\'ghht zur semen gnatlnamauch\'*' words_Vacuum_ball = /substitute -p %* @{Cyellow}[Vacuum ball]@{n} (asphyx-A1)
 /def -i -F -q -t'*\'ghht mar nak grttzt gnatlnamauch\'*' words_Vacuum_globe = /substitute -p %* @{Cyellow}[Vacuum globe]@{n} (asphyx-A2)
 /def -i -F -q -t'*\'ghht zur fehh\'*' words_Vacuumbolt = /substitute -p %* @{Cyellow}[Vacuumbolt]@{n} (asphyx1)
 /def -i -F -q -t'*\'War is TOTAL massacre, sport the war, war SUPPOORT\!\!\!\'*' words_War_ensemble = /substitute -p %* @{Cyellow}[War ensemble]@{n}

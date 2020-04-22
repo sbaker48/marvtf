@@ -61,7 +61,9 @@
 ; /purge_array name
 ;     Removes the array with the given name.
 ;
-
+; /dump_array arref
+;     Outputs the value of the array and all sub-arrays.
+;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;   EXAMPLE
@@ -259,6 +261,18 @@
     /else \
         /echo %0: Invalid number of arguments (%*)%;\
     /endif
+
+
+; /dump_array name
+; /dump_array arref subname|index
+; /dump_array name [index1..indexN] subname|index
+/def -i dump_array = \
+    /let arref=$[_to_arref({*})]%;\
+    /if (arref =~ "") \
+        /echo %0: Bad argument (%*)%;\
+        /return ""%;\
+    /endif%;\
+    /listvar -g %{arref}*
 
 
 ; Helper methods
