@@ -62,6 +62,9 @@
     /elseif ( continent =~ "Furnachia" ) \
         /set gcoord_x=$[coord_x+9402]%;\
         /set gcoord_y=$[coord_y+9346]%;\
+    /elseif ( continent =~ "Renardy" ) \
+        /set gcoord_x=$[coord_x+10261]%;\
+        /set gcoord_y=$[coord_y+7281]%;\
     /elseif ( continent =~ "Ocean" ) \
         /set continent=Deep Sea%;\
         /set cont=deepsea%;\

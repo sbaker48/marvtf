@@ -115,7 +115,7 @@ fraggle,luce,131,195,7688,10731,
 fulgurite_shop,laen,633,355,8825,8547,
 furn_ferry,furn,190,81,9592,9427,furn
 gauntlet,laen,350,242,8542,8434,
-ghost_liberators,deso,238,87,7219,9098,liberators|libs
+ghost_liberators,deso,238,87,7219,9098,liberators|liberator|libs
 gladiator,luce,148,148,7705,10684,
 goblin_citadel,deso,517,120,7498,9131,jurkajef
 goblin_farm,deso,338,368,7319,9379,
@@ -390,3 +390,6 @@ zoys_inn,laen,516,632,8708,8824,zoys
 asylum,laen,348,474,8540,8666,
 kingslayer,furn,330,105,9732,9451,
 syggax,roth,265,437,9767,7373,
+duergar_temple,deso,264,141,7245,9152,
+duck_commune,roth,139,139,9641,7075,
+treehouse_winery,roth,412,96,9914,7032,

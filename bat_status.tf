@@ -79,13 +79,21 @@
 ; If a different @BAT@ format is used, this trigger should be updated
 
 /def -i -F -q -p9 -mregexp -t"^@BAT@ (-?[0-9]+)/([0-9]+) (-?[0-9]+)/([0-9]+) (-?[0-9]+)/([0-9]+) " status_capture_stats = \
-    /set cur_hp=%P1%;\
-    /set cur_hpmax=%P2%;\
-    /set cur_sp=%P3%;\
-    /set cur_spmax=%P4%;\
-    /set cur_ep=%P5%;\
-    /set cur_epmax=%P6
-
+    /if ({P1} != cur_hp | {P2} != cur_hpmax) \
+        /set cur_hp=%P1%;\
+        /set cur_hpmax=%P2%;\
+	/trigger HP_CHANGED%;\
+    /endif%;\
+    /if ({P3} != cur_sp | {P4} != cur_spmax) \
+        /set cur_sp=%P3%;\
+        /set cur_spmax=%P4%;\
+	/trigger SP_CHANGED%;\
+    /endif%;\
+    /if ({P5} != cur_ep | {P6} != cur_epmax) \
+        /set cur_ep=%P5%;\
+        /set cur_epmax=%P6%;\
+	/trigger EP_CHANGED%;\
+    /endif
 
 ;##### fill skill/spell field
 

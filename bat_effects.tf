@@ -47,7 +47,7 @@
 /test addprot("PSISHLD", "Psionic Shield", "Psionic waves surge through your body and mind!", "The psionic shield vanishes.", 0)
 /test addprot_regexp("FSHLD", "Force Shield", "^(You form a psionic shield of force around your body\.|.* forms a shield of force around you\.)\$", "^Your armour feels thinner\.\$", 0)
 /test addprot("MINDDEV", "Mind Development", "You feel your mind developing.", "Your brain suddenly seems smaller.", 0)
-/test addprot_regexp("PFE", "Protection from Evil", "^.* with sheer power as you are surrounded by protective holy aura\.\$", "^(You suddenly feel more vulnerable to evil\.|Your holy aura prevents you .* and is dispelled in the process\.)\$", 0)
+/test addprot_regexp("PFE", "Protection from Evil", "^(A white holy aura surrounds you and you feel more protected against evil\.|.* with sheer power as you are surrounded by protective holy aura\.)\$", "^(You suddenly feel more vulnerable to evil\.|Your holy aura prevents you .* and is dispelled in the process\.)\$", 0)
 /test addprot("RT", "Resist Temptation", "* with sheer power as you are surrounded by twinkling aura.", "You feel more vulnerable against flips.", 0)
 /test addprot_regexp("HPROT", "Heavenly Prot", "^[A-Za-z' ]+ as you are suddenly( surrounded( by)?)?", "^Holy particles slow down, rapidly fading away\.\$", 0)
 /test addprot_regexp("SOULSHLD", "Soul Shield", "^(You spiritually reach out for your soul, protecting it with holy force\.|[A-Z][a-z]+ places (his|her|its) hand over you and blesses your soul in the name of Las\.)\$", "^Your soul feels suddenly more vulnerable\.\$", 0)
@@ -73,7 +73,7 @@
 /test addprot("PFF", "Personal Force Field", "You surround yourself by a bubble of force.", "Your field disperses with a soft \*pop\* and is gone.", 0)
 /test addprot("WALK", "Spider Walk", "For some reason you want to run on the walls for a little while.", "The walls don\\\'t look so inviting anymore.", 0)
 /test addprot("TOUCH", "Spider Touch", "Suddenly you don\\\'t feel too good. Your blood feels like it is on fire.", "Your blood does not burn anymore.", 0)
-/test addprot("FFISTS", "Flame Fists", "Your fists are surrounded by Curath\\\'s black flames!", "Your flaming fists disappear.", 0)
+/test addprot("FFISTS", "Flame Fists", "Your fists are surrounded by Curath\\\'s black flames!", "Your fists are no longer surrounded by Curath\\\'s black flames.", 0)
 /test addprot("MINORP", "Minor Protection", "You feel slightly protected.", "The minor protection fades away.", 0)
 /test addprot("ZOOP", "Zoological Protection", "You feel protected from animals.", "The zoological protection fades away.", 0)
 /test addprot("CRYZOOP", "Cryptozoological protection", "You feel protected from mythical creatures.", "The cryptozoological protection fades away.", 0)
@@ -89,6 +89,10 @@
 /test addprot("SUPPRESS", "Suppress magic", "Your feel excruciating pain in your head.", "You feel relieved.", 0, "magenta")
 /test addprot("FORGET", "Forget", "You feel rather empty-headed.", "A fog lifts from your mind. You can remember things clearly now.", 0, "magenta")
 /test addprot("HALLU", "Hallucination", "* looks at you mesmerizingly.  The world around you changes.", "Your mind clears.", 0, "magenta")
+
+/test addprot("GLOW", "Holy glow", "You feel warm. The warmth increases, but never reaches hot. The room around you brightens up.", "Your holy glow fades.", 0, cyan)
+/test addprot("GARMOUR", "Ghost armour", "Ghost of * complies, and you feel protected.", "Your ghost armour dissipates.", 0)
+/test addprot("GCOMP", "Ghost companion", "You ask * to accompany you in your fight against evil soul-slavers.", "Ghost of * whispers \\\'I must leave now. Good luck.\\\'", 1)
 
 
 /def -i -F -t'You perform the ceremony.' cer1 = /addstatus CER
@@ -107,7 +111,8 @@
 /def -i -F -aBCYellow -t'You feel a bit tired.' camp3 = /rmstatus CAMP
 /def -i -F -aBCYellow -t'You stretch yourself and consider camping.' camp4 = /rmstatus CAMP
 
-/def -i -t'You sit down and start meditating.' med1 = /addstatus MED cyan%;/repeat -360 1 /rmstatus MED
+/def -i -t'You sit down and start meditating.' med1 = /addstatus MED cyan
+/def -i -t'You feel in harmony with yourself, the universe and life in general.' med2 = /rmstatus MED
 
 
 ; Unstun handling
