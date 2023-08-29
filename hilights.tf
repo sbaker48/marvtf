@@ -1,9 +1,13 @@
 
+/def -i -F -t"Moving to starting location." bat_startup = /trigger BAT_STARTUP
+/def -i -F -t'*Armageddon has arrived to church*' bat_shutdown = /trigger BAT_SHUTDOWN
+/def -i -F -t'You die.' death1 = /trigger DEATH
+
 /def -i -F -aBCRed -t'* utters the magic words \'saugaiii\'' poison1
-/def -i -F -aBCRed -t'You shiver and suffer from POISON!!' poison2
-/def -i -F -aBCGreen -t'You feel the poison leaving your veins*' poison3
-/def -i -F -aBCGreen -t'You feel poison leaving your veins.' poison4
-/def -i -F -aBCGreen -t'The sauna cured your poison!' poison5
+/def -i -F -aBCRed -t'You shiver and suffer from POISON!!' poison2 = /set poisoned=1
+/def -i -F -aBCGreen -t'You feel the poison leaving your veins*' poison3 = /set poisoned=0
+/def -i -F -aBCGreen -t'You feel poison leaving your veins.' poison4 = /set poisoned=0
+/def -i -F -aBCGreen -t'The sauna cured your poison!' poison5 = /set poisoned=0
 
 /def -i -F -aBCRed -t'You get hit, and your eyes lose focus slightly.' stun1
 /def -i -F -aBCRed -t'You become somewhat confused, losing your edge.' stun2
@@ -26,24 +30,21 @@
 
 /def -i -F -aBCYellow -t'...WHO breaks the stun quickly off with intense concentration.' stunned1x
 
-/def -i -F -aBCGreen -t'You score a CRITICAL hit!' crithit = scan
+/def -i -F -aBCRed -t'* has summoned you!' summon1 = /send @@whereami
+/def -i -F -t'You sense your surroundings distorting and then snap.' reloc1 = /send @@whereami
+/def -i -F -t'You open up a sparkling blue dimensional rift, and step through to the *' goto_ship1 = /send @@whereami
 
-/def -i -F -aBCRed -t'* has summoned you!' summon1 = @@whereami
-/def -i -F -t'You sense your surroundings distorting and then snap.' reloc1 = @@whereami
-/def -i -F -t'You open up a sparkling blue dimensional rift, and step through to the *' goto_ship1 = @@whereami
-
-/def -i -F -aBCYellow -t'This is the first time you\'ve been here.' newroom1 = @@whereami
-/def -i -F -aBCYellow -t'You discovered a new room! Check your updated explore count.' newroom2 = @@whereami
-/def -i -F -aBCYellow -t'Congrats! You discovered a new room!' newroom3 = @@whereami
-/def -i -F -aBCYellow -t'You\'ve never been here before.' newroom4 = @@whereami
-/def -i -F -aBCYellow -t'This place seems unfamiliar to you.' newroom5 = @@whereami
-/def -i -F -aBCYellow -t'New room discovered -- you feel more experienced.' newroom6 = @@whereami
-/def -i -F -aBCYellow -t'You\'ve never set foot here before.' newroom7 = @@whereami
-/def -i -F -aBCYellow -t'Hmm, what\'s this? A new room, perhaps?' newroom8 = @@whereami
-/def -i -F -aBCYellow -t'You don\'t remember being here before.' newroom9 = @@whereami
-/def -i -F -aBCYellow -t'New room located -- explore count increased by one.' newroom10 = @@whereami
-
-/def -i -F -arBCRed -t'Robin Hood arrives from the shadows, as merrily as ever.' robin_hood
+/def -i -F -aBCYellow -t'This is the first time you\'ve been here.' newroom1 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'You discovered a new room! Check your updated explore count.' newroom2 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'Congrats! You discovered a new room!' newroom3 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'You\'ve never been here before.' newroom4 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'This place seems unfamiliar to you.' newroom5 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'New room discovered -- you feel more experienced.' newroom6 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'You\'ve never set foot here before.' newroom7 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'Hmm, what\'s this? A new room, perhaps?' newroom8 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'You don\'t remember being here before.' newroom9 = /trigger NEW_ROOM
+/def -i -F -aBCYellow -t'New room located -- explore count increased by one.' newroom10 = /trigger NEW_ROOM
+/def -i -F -t'NEW_ROOM' new_room1 = /send @@whereami
 
 /def -i -F -aBCRed -t'Tiger starts concentrating on a new offensive spell.' tiger1
 /def -i -F -aBCRed -t'* assassin tiger tracking his prey' tiger2
@@ -84,3 +85,7 @@
 /def -i -F -aBCRed -t'* (near death)' shape8p
 
 /def -i -F -axBCBlue -t'You feel like you just got slightly better in *' skill_raise
+
+/def -i -F -arBCRed -t'Robin Hood arrives from the shadows, as merrily as ever.' robin_hood
+/def -i -F -arBCRed -t'You hear a loud snap as the walls separating the different planes of existance break down*' clone_lite
+

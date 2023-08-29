@@ -5,7 +5,7 @@
 /require marvtf/shippaths.tf
 /require marvtf/timer.tf
 
-/set shipname=binkley
+; requires alias SHIPNAME
 
 ; Ship events
 /def -i -F -t'There is a ripple in space, and after a moment, the ship * appears.' ship_summon = /trigger SHIP_SUMMON
@@ -18,13 +18,13 @@
 /def -i -F -t'[A-Z]* tells you \'Your hull is already fully repaired\\!\'' ship_repair_none = /trigger SHIP_REPAIR_DONE
 
 ; Ship event handling
-/def -i -F -t'SHIP_SUMMON' on_ship_summon = @@whereami%;/repeat -1 1 @@console info condition
-/def -i -F -t'SHIP_RESCUE' on_ship_rescue = @@whereami%;/repeat -1 1 @@console info condition
-/def -i -F -t'SHIP_SAIL_DONE' on_ship_sail_done = @@whereami%;@@view%;/repeat -1 1 @@console info condition
-/def -i -F -t'SHIP_SAIL_STOP' on_ship_sail_stop = @@whereami%;@@view
-/def -i -F -t'SHIP_SAIL_FAIL' on_ship_sail_fail = @@whereami%;@@view
-/def -i -F -t'SHIP_ARRIVE_SIGNAL' on_ship_arrive_signal = /repeat -1 1 @@rescue %{shipname}
-/def -i -F -t'SHIP_REPAIR_DONE' on_repair_done = /repeat -3 1 @@sailor gangway raise
+/def -i -F -t'SHIP_SUMMON' on_ship_summon = @whereami%;/repeat -1 1 @console info condition
+/def -i -F -t'SHIP_RESCUE' on_ship_rescue = @whereami%;/repeat -1 1 @console info condition
+/def -i -F -t'SHIP_SAIL_DONE' on_ship_sail_done = @whereami%;@view%;/repeat -1 1 @console info condition
+/def -i -F -t'SHIP_SAIL_STOP' on_ship_sail_stop = @whereami%;@view
+/def -i -F -t'SHIP_SAIL_FAIL' on_ship_sail_fail = @whereami%;@view
+/def -i -F -t'SHIP_ARRIVE_SIGNAL' on_ship_arrive_signal = /repeat -1 1 @rescue SHIPNAME
+/def -i -F -t'SHIP_REPAIR_DONE' on_repair_done = /repeat -3 1 @sailor gangway raise
 
 
 /def -i -F -t'[A-z]* tells you \'That\'s quite a list of destinations - I\'ll keep track of as many as possible*' ship_cruise_long = /set ship_cruise_repeat=1
@@ -48,7 +48,7 @@
 
 /def -i move_to_helm = \
     /def -n1 -t'WHEREAMI' = /move_to_helm2%;\
-    @@whereami
+    @whereami
 
 /def -i move_to_helm2 = \
     /if ( substr( area, strlen( area ) - 6, 6 ) !~ "(ship)" ) \
@@ -204,62 +204,62 @@
 /def -i sellall = \
     /let curloc=%;\
     /test curloc := ship_cur_loc()%;\
-    /eval d;get all coins;u%;\
+    /eval SHIP_SELLALL_START%;\
     /eval gagoutput set look_on_move off%;\
     /if ( curloc =~ "lorenchia_harbor" ) \
-        /eval gangway e;gangway;3 e;2 E;e;3 ne;2 e;n;manifest %{shipname}%;\
+        /eval gangway e;gangway;3 e;2 E;e;3 ne;2 e;n;manifest SHIPNAME%;\
         /eval y%;\
-        /eval s;9 e;n;manifest %{shipname}%;\
+        /eval s;9 e;n;manifest SHIPNAME%;\
         /eval y%;\
-        /eval s;w;sw;s;sw;w;n;manifest %{shipname}%;\
+        /eval s;w;sw;s;sw;w;n;manifest SHIPNAME%;\
         /eval y%;\
-        /eval s;14 w;n;deposit change;s;W;3 w;%{shipname}%;\
+        /eval s;14 w;n;deposit change;s;W;3 w;SHIPNAME%;\
     /elseif ( curloc =~ "shadowkeep_harbor" ) \
-        /eval gangway n;gangway;n;3 e;3 n;2 w;s;manifest %{shipname}%;\
+        /eval gangway n;gangway;n;3 e;3 n;2 w;s;manifest SHIPNAME%;\
         /eval y%;\
-        /eval n;2 w;n;w;manifest %{shipname}%;\
+        /eval n;2 w;n;w;manifest SHIPNAME%;\
         /eval y%;\
-        /eval e;3 n;2 w;s;manifest %{shipname}%;\
+        /eval e;3 n;2 w;s;manifest SHIPNAME%;\
         /eval y%;\
-        /eval n;2 e;4 s;w;s;deposit change;n;w;3 s;3 e;s;%{shipname}%;\
+        /eval n;2 e;4 s;w;s;deposit change;n;w;3 s;3 e;s;SHIPNAME%;\
     /elseif ( curloc =~ "arelium_harbor" )\
-        /eval gangway e;gangway;S;se;S;4 s;13 w;n;manifest %{shipname}%;\
+        /eval gangway e;gangway;S;se;S;4 s;13 w;n;manifest SHIPNAME%;\
 	/eval y%;\
-	/eval 3 s;manifest %{shipname}%;\
+	/eval 3 s;manifest SHIPNAME%;\
 	/eval y%;\
-	/eval n;3 w;3 s;e;manifest %{shipname}%;\
+	/eval n;3 w;3 s;e;manifest SHIPNAME%;\
 	/eval y%;\
-	/eval w;4 s;2 sw;w;n;manifest %{shipname}%;\
+	/eval w;4 s;2 sw;w;n;manifest SHIPNAME%;\
 	/eval y%;\
-	/eval s;14 e;ne;n;manifest %{shipname}%;\
+	/eval s;14 e;ne;n;manifest SHIPNAME%;\
 	/eval y%;\
-	/eval s;3 w;nw;6 n;2 nw;11 w;n;deposit change;s;E;e;N;N;n;nw;7 n;%{shipname}%;\
+	/eval s;3 w;nw;6 n;2 nw;11 w;n;deposit change;s;E;e;N;N;n;nw;7 n;SHIPNAME%;\
     /elseif ( curloc =~ "deso_ferry" ) \
-        /eval gangway w;gangway;4 w;n;manifest %{shipname}%;\
+        /eval gangway w;gangway;4 w;n;manifest SHIPNAME%;\
         /eval y%;\
-        /eval s;2 w;n;manifest %{shipname}%;\
+        /eval s;2 w;n;manifest SHIPNAME%;\
         /eval y%;\
-        /eval s;w;s;w;manifest %{shipname}%;\
+        /eval s;w;s;w;manifest SHIPNAME%;\
         /eval y%;\
-        /eval e;n;7 e;%{shipname}%;\
+        /eval e;n;7 e;SHIPNAME%;\
     /elseif ( curloc =~ "furn_ferry" ) \
-        /eval gangway e;gangway;3 s;2 se;14 e;E;E;6 s;e;manifest %{shipname}%;\
+        /eval gangway e;gangway;3 s;2 se;14 e;E;E;6 s;e;manifest SHIPNAME%;\
         /eval y%;\
-        /eval w;3 sw;s;e;manifest %{shipname}%;\
+        /eval w;3 sw;s;e;manifest SHIPNAME%;\
         /eval y%;\
-        /eval w;2 nw;4 w;s;manifest %{shipname}%;\
+        /eval w;2 nw;4 w;s;manifest SHIPNAME%;\
         /eval y%;\
-        /eval n;N;W;6 w;3 nw;3 n;w;deposit change;e;6 s;W;6 w;2 nw;3 n;%{shipname}%;\
+        /eval n;N;W;6 w;3 nw;3 n;w;deposit change;e;6 s;W;6 w;2 nw;3 n;SHIPNAME%;\
     /elseif ( curloc =~ "rsf" ) \
-        /eval gangway s;gangway;2 w;3 s;manifest %{shipname}%;\
+        /eval gangway s;gangway;2 w;3 s;manifest SHIPNAME%;\
         /eval y%;\
-        /eval 3 n;e;manifest %{shipname}%;\
+        /eval 3 n;e;manifest SHIPNAME%;\
         /eval y%;\
-        /eval 2 e;manifest %{shipname}%;\
+        /eval 2 e;manifest SHIPNAME%;\
         /eval y%;\
-        /eval e;s;manifest %{shipname}%;\
+        /eval e;s;manifest SHIPNAME%;\
         /eval y%;\
-        /eval n;deposit change;2 w;%{shipname}%;\
+        /eval n;deposit change;2 w;SHIPNAME%;\
     /else \
         /echo -aBCYellow Unknown location for sellall%;\
     /endif%;\
@@ -273,9 +273,9 @@
 /DEF -mregexp -F -i -t"^This disc is really a fair-sized ring" ship_disc5_sub = /ECHO -p @{BCwhite}Disc 5@{n}
 /DEF -mregexp -F -i -t"^This disc is really a fairly large ring" ship_disc6_sub = /ECHO -p @{BCwhite}Disc 6@{n}
 /DEF -mregexp -F -i -t"^This disc is really a large ring" ship_disc7_sub = /ECHO -p @{BCwhite}Disc 7@{n}
-/DEF -mregexp -F -i -t"^This disc is really a very large ring" ship_disc8_sub = /ECHO -p @{BCwhite}Disc 9@{n}
+/DEF -mregexp -F -i -t"^This disc is really a very large ring" ship_disc8_sub = /ECHO -p @{BCwhite}Disc 8@{n}
 /DEF -mregexp -F -i -t"^This disc is really a huge ring" ship_disc9_sub = /ECHO -p @{BCwhite}Disc 9@{n}
 /DEF -mregexp -F -i -t"^This disc is really a massive ring" ship_disc10_sub = /ECHO -p @{BCwhite}Disc 10@{n}
 
-/def -i -t'You gained * Merchant Navy reputation.' ship_rep = @@sailor reputation
+/def -i -t'You gained * Merchant Navy reputation.' ship_rep = @sailor reputation
 
