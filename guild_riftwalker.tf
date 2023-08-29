@@ -50,7 +50,7 @@
 
 
 
-/def -i -F -mregexp -t'--= .* entity  HP:([0-9]*)\(([0-9]*)\) \[.*\] \[([a-z]*)\] \[.*\].*=--' entity_status = \
+/def -i -F -mregexp -t'^--= .*  HP:([0-9]*)\(([0-9]*)\) \[.*\] \[([a-z]*)\] \[.*\].*=--' entity_status = \
     /test entitystatus := pad(%P1,4,"/",1,%P2,4)%;\
     /if ( {P3} =~ "controlled" ) \
         /rw_addstatus -F EC%;\
