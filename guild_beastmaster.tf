@@ -9,8 +9,8 @@
 	/eval alias MOUNT %{mount}%;\
     /endif
 
-/def -i -F -mregexp -t'^use heel at (.*)$' beastmaster_setheal = /send alias MOUNT_HEEL %{P1}
-/def -i -F -t'* gives you a big slobbery lick.' beastmaster_healarrived = /send ride MOUNT
+/def -i -F -mregexp -t'^use heel at (.*)$' beastmaster_setheel = /send alias MOUNT_HEEL %{P1}
+/def -i -F -t'* gives you a big slobbery lick.' beastmaster_heelarrived = /send ride MOUNT
 
 /def -i -F -t'You think that * should be worried about being underground right about now.' rug0 = /addstatus RUG Red
 /def -i -F -t'* responds to the motivation and reluctantly slinks forward.' rug1 = /rmstatus RUG%;/send ride MOUNT
