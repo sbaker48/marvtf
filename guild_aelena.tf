@@ -49,5 +49,5 @@
 
 /def -i -F -mregexp -t'^Your familiar envelopes the [a-z]* and turns it into [a-z]* chaos energy for (.*), leaving only rotten flesh behind.' famstore = \
     /let poi=$[strcat(toupper(substr({P1},0,1)),substr({P1},1))]%;\
-    /send @@grep '%{poi}' familiar organs
+    /send @@grep '%{poi}' familiar reagents
 
