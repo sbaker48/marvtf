@@ -1,3 +1,8 @@
+; Shortcut to cast a spell after ceremony, or use a skill after focus.
+; For example:
+;   /cer cast cure light wounds at me
+;   /focus use refining at iron in workbench
+
 /def -i cer = /def -n1 -F -t'You perform the ceremony.' cer_do = /repeat -0:00:02 1 %{*}%;use ceremony
 /def -i focus = /def -n1 -F -t'A vision of a single drop of blood, silently falling in darkness, fills your' focus_do = /repeat -0:00:02 1 %{*}%;use focus
 /def -i -F -t'You fail to focus enough.' refocus = /repeat -0:00:02 1 use focus
