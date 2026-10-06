@@ -7,7 +7,7 @@ bat_effects.tf - Populates the list of effects on the status line. Custom effect
 
 bat_prots.tf - Sets up a list of effects that can be checked and re-applied with one command.
 
-ship.tf - Commands for ship navigation. Warning: undocumented, somewhat complicated, and fairly heavily tied to my specific ship.
+ship.tf - Commands for ship navigation. Auto-calculates paths to destinations. Warning: Mostly undocumented, somewhat complicated, and portions are tied to my specific ship. Some edits may be necessary to use this fully.
 
 
 ![screenshot](https://github.com/sbaker48/marvtf/raw/master/marvtf1.png)
