@@ -9,7 +9,7 @@
 
 ; Ship events
 /def -i -F -t'There is a ripple in space, and after a moment, the ship * appears.' ship_summon = /trigger SHIP_SUMMON
-/def -i -F -t'The crew rescue you!' ship_rescue = /trigger SHIP_RESCUE
+/def -i -F -t'The crew rescues you!' ship_rescue = /trigger SHIP_RESCUE
 /def -i -F -t'[A-Z]* tells you \'Bringin\' tha ship to a halt.\'' ship_halt = /trigger SHIP_SAIL_DONE%;/timer_stop SAIL
 /def -i -F -t'[A-Z]* tells you \'Comin\' to a stop, *' ship_stop = /trigger SHIP_SAIL_STOP
 /def -i -F -t'[A-Z]* tells you \'I am sorry, *, but I don\'t know where * is\\!\'' ship_fail = /trigger SHIP_SAIL_FAIL

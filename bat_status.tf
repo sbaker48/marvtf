@@ -1,5 +1,9 @@
 /loaded marvtf/bat_status.tf
 
+; ########################################################################################################
+; ## IMPORTANT: See further down in this file for configuration of your current stats on the command line!
+; ########################################################################################################
+
 ; The status line will look like this:
 
 ; __736/736 342/342 290/290___cast 'water walking' at 'me'__________________BOT_CER__
@@ -9,11 +13,13 @@
 ; Current stats are set by the prompt/sc output (see below)
 ; Current skill/spell are set whenever you use skills or cast spells (also see below)
 ;
-; The current status fields are set by your other triggers.
+; The current status fields are set by your other triggers. Use commands like the following in your tridders to add or remove status indicators.
+; 
 ;   /addstatus FOO           - Adds FOO to the status effects field, in the default color (status_effects_color)
 ;   /addstatus FOO green     - Adds a status effect in a different color. Valid colors are: black, red, green, yellow, blue, magenta, cyan, white
 ;   /rmstatus FOO            - Removes the FOO status field
 ;   hasstatus("FOO")         - Can be used by other triggers to check if a status message is currently set
+
 
 ; Configurable parameters for the status line. Set these in your .tfrc (or wherever) to customize the colors of the status line.
 /set status_stats_color=white
@@ -22,8 +28,6 @@
 /set status_command_attr=B
 /set status_effects_color=yellow
 /set status_effects_attr=B
-
-
 
 /set warn_status=off
 /set status_stats_width=10
@@ -66,12 +70,27 @@
 
 ;##### fill stats field
 
-; Prompt and short score should start with "@BAT@ .... <lf>"
-; Whatever is after the @BAT@ will show in your status line.
-; These lines will be gagged, so the actual prompt/sc you want to be displayed should be given after a <lf> tag
+; Your prompt and short score on the game should start with "@BAT@ .... <lf>"
+; Whatever is after the @BAT@ will show in your status line. It should start with "<hp>/<maxhp> <sp>/<maxsp> <ep>/<maxep>" but after that,
+; it can include anything else you want to see on your status line.
+;
+; Since the @BAT@ line is gagged in the client, the actual prompt/sc you want to be displayed should be given after a <lf> tag.
+; In this example, the prompt shown will be ">>", and the 'sc' display will be "hp: xxx (xxx) sp: xxx (xxx) ....." etc.
+;
+; If this isn't clear, just use the example below.
+;
 ; For example:
-; prompt @BAT@ <hp>/<maxhp> <sp>/<maxsp> <ep>/<maxep> [$<cash>] (<weight>kg) [<rooms>]<lf>>>
-; sc set @BAT@ <hp>/<maxhp> <sp>/<maxsp> <ep>/<maxep> [$<cash>] (<weight>kg) [<rooms>]<lf>hp: {colorhp} {diffhp} (<maxhp>) sp: {colorsp} {diffsp} (<maxsp>) ep: {colorep} {diffep} (<maxep>)
+;   prompt @BAT@ <hp>/<maxhp> <sp>/<maxsp> <ep>/<maxep> [$<cash>] (<weight>kg) [<exp>]<lf>>>
+;   sc set @BAT@ <hp>/<maxhp> <sp>/<maxsp> <ep>/<maxep> [$<cash>] (<weight>kg) [<exp>]<lf>hp: {colorhp} {diffhp} (<maxhp>) sp: {colorsp} {diffsp} (<maxsp>) ep: {colorep} {diffep} (<maxep>)
+;
+;          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^...
+;          This part is important, don't change it.     This part you can change or      Also change this however you want.
+;          (see below)                                  add whatever you want. But it
+;                                                       should be the same for both
+;                                                       prompt and sc.
+;
+; Or, to also facilitate real-time locations (see whereami.tf):
+;   prompt @BAT@ <hp>/<maxhp> <sp>/<maxsp> <ep>/<maxep> [$<cash>] (<weight>kg) [<rooms>]<lf>@COORDS@ <continent> <coords><lf>>>
 
 /def -i -ag -q -p8 -mregexp -t"^@BAT@ " status_update_stats0 = /status_update_stats %PR
 
@@ -97,6 +116,8 @@
 
 ;##### fill skill/spell field
 
+; The following will automatically add your current skill or spell to the status line.
+
 /def -i -F -p8 -t'You start chanting.' spell_start = @@cast info
 /def -i -F -p8 -t'You start concentrating on the skill.' skill_start = @@cast info
 
@@ -107,9 +128,10 @@
 /def -i -F -p8 -aCGreen -t'You are done with the chant.' cmdstatus5 = /set statuscmd=
 /def -i -F -p8 -aCYellow -t'You interrupt the spell.' cmdstatus6 = /set statuscmd=
 /def -i -F -p8 -aCYellow -t'You break your skill attempt.' cmdstatus7 = /set statuscmd=
-/def -i -F -p8 -aBCYellow -t'You do not have enough spell points to cast the spell.' cmdstatus8 = /set statuscmd=
-/def -i -F -p8 -aBCYellow -t'Your movement prevents you from casting the spell.' cmdstatus9 = /set statuscmd=
-/def -i -F -p8 -aBCYellow -t'Your movement prevents you from doing the skill.' cmdstatus10 = /set statuscmd=
-/def -i -F -p8 -aBCYellow -t'You lose your concentration and cannot do the skill.' cmdstatus11 = /set statuscmd=
-/def -i -F -p8 -aBCYellow -t'You lose your concentration and cannot cast the spell.' cmdstatus12 = /set statuscmd=
+/def -i -F -p8 -aCYellow -t'You stop your current repeated action.' cmdstatus8 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'You do not have enough spell points to cast the spell.' cmdstatus9 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'Your movement prevents you from casting the spell.' cmdstatus10 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'Your movement prevents you from doing the skill.' cmdstatus11 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'You lose your concentration and cannot do the skill.' cmdstatus12 = /set statuscmd=
+/def -i -F -p8 -aBCYellow -t'You lose your concentration and cannot cast the spell.' cmdstatus13 = /set statuscmd=
 

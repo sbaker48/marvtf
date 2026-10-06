@@ -42,6 +42,10 @@
     /set gcoord_y=%P4%;\
     /trigger WHEREAMI
 
+
+; If real-time location is needed, include the following at the start of your batmud prompt. It will never be seen, since the following trigger suppresses it.
+;      @COORDS@ <continent> <coords><lf>
+
 /def -i -F -p9 -ag -mregexp -t'^@COORDS@ ([A-Za-z]*) (-*[0-9]*),(-*[0-9]*)$' sc_coords = \
     /set continent=%P1%;\
     /set cont=$[tolower(substr({P1},0,4))]%;\

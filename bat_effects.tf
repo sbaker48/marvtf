@@ -11,8 +11,8 @@
         /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname} %{color}%;\
         /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%;\
     /else \
-        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname} %{color}%%%;@@party report %{name} up%;\
-        /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%;\
+        /eval /def -i -F -aBCYellow -t"%{msgup}" %{stname}_up = /addstatus %{stname} %{color}%%%;@party report %{name} up%;\
+        /eval /def -i -F -aBCYellow -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@party report %{name} DOWN!%;\
     /endif
 
 /def -i addprot_regexp = \
@@ -25,8 +25,8 @@
         /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%;\
         /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%;\
     /else \
-        /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@@party report %{name} up%;\
-        /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@@party report %{name} DOWN!%;\
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgup}" %{stname}_up = /addstatus %{stname}%%%;@party report %{name} up%;\
+        /eval /def -i -F -aBCYellow -mregexp -t"%{msgdn}" %{stname}_down = /rmstatus %{stname}%%%;@party report %{name} DOWN!%;\
     /endif
 
 
@@ -42,6 +42,7 @@
 /test addprot("QSILV", "Quicksilver", "You feel more agile.", "You feel less agile.", 0)
 /test addprot("FABS", "Force Absorption", "You sense a powerful protective aura around you.", "A skin brown flash momentarily surrounds you and then vanishes.", 0)
 /test addprot("HASTE", "Haste", "The world seems to slow down.", "The world seems to speed up.", 0)
+/test addprot("LOL", "Lift of Load", "You feel odd. Not stronger, but...", "You feel odd. Not weaker, but...", 0)
 /test addprot("EV", "Enhanced Vitality", "A bright light exctract from your hands covering your skin.", "Your skin stops glowing.", 0)
 /test addprot("RENTROPY", "Resist Entropy", "You feel your life force expanding.", "You feel your hair is getting grayer.", 0)
 /test addprot("PSISHLD", "Psionic Shield", "Psionic waves surge through your body and mind!", "The psionic shield vanishes.", 0)
@@ -62,7 +63,7 @@
 /test addprot("EPOWER", "Earth Power", "You feel your strength changing. You flex you muscles experimentally.", "The runic sigla \\\'% !^\\\' fade away.. leaving you feeling strange.", 0)
 /test addprot("EBLOOD", "Earth Blood", "An icy chill runs through your veins.", "The runic sigla \\\'!( \*)\\\' fade away.. leaving you feeling strange.", 0)
 /test addprot("VINE", "Vine Mantle", "Vines entangle your body.", "The vines around your body shrink.", 0)
-/test addprot("ESKIN", "Earth Skin", "You feel your skin harden.", "Your skin feels softer.", 0)
+/test addprot("ESKIN", "Earth Skin", "You feel your skin harden.", "Your skin returns to its original texture.", 0)
 /test addprot("WARES", "War Ensemble", "You feel full of battle rage! Victory is CERTAIN!", "The effect of war ensemble wears off.", 1)
 /test addprot("FAVOUR", "Arches Favour", "You feel optimistic about your near future!", "You no longer have Arches Favour on you. You feel sad.", 1)
 /test addprot_regexp("MELODY", "Melodical Embracement", "^(.* wraps you into an embracing melody\.|You embrace yourself with your melody\.)\$", "^The embracing melody subsides, leaving you longing for more\.\$", 1)
@@ -95,11 +96,12 @@
 /test addprot("GCOMP", "Ghost companion", "You ask * to accompany you in your fight against evil soul-slavers.", "Ghost of * whispers \\\'I must leave now. Good luck.\\\'", 1)
 
 
-/def -i -F -t'You perform the ceremony.' cer1 = /addstatus CER
+/def -i -F -aBCyellow -t'You perform the ceremony.' cer1 = /addstatus CER
 /def -i -F -aBCblue -t'You have an unusual feeling as you cast the spell.' cer2 = /rmstatus CER
 
-/def -i -F -t'You perform the kata.' kata1 = /addstatus KATA
-/def -i -F -aBCblue -t'You have a strong confidence in your skill.' kata2 = /rmstatus KATA
+/def -i -F -aBCyellow -t'You perform the kata.' kata1 = /addstatus KATA
+/def -i -F -aBCyellow -t'You perform the aggressive Bassai-Dai kata.' kata2 = /addstatus KATA
+/def -i -F -aBCblue -t'You have a strong confidence in your skill.' kata3 = /rmstatus KATA
 
 /set parrystr=
 /def -i set_parrystr=/rmstatus %{parrystr}%;/if ( {1} > 0 ) /eval /set parrystr=PARRY:%{1}%;/addstatus %{parrystr}%;/endif
@@ -120,7 +122,7 @@
 /set unstun_pid=0
 /def -i check_unstun = \
     /eval /set unstun_pid=$[repeat("-3 1 /unstun_down")]%;\
-    @@grep -q "Unstun" show effects
+    @grep -q "Unstun" show effects
 
 /def -i -F -t'| Unstun         * | For now    * |' unstun_status = /unstun_up
 
@@ -169,7 +171,7 @@
 
 /def -i get_disc_time = \
     /def -i -n1 -mregexp -t'floating about ([0-9]*) centimetres' disctime0 = /disc_time_update %%{P1}%;\
-    @@grep "centimetres" l at my disc
+    @grep "centimetres" l at my disc
 
 /def -i -F -t'You summon a floating disc that starts following you.' discload1 = /get_disc_time
 /def -i -F -t'You reload magical energy to the disc that is floating in the air.' discload2 = /get_disc_time
@@ -205,7 +207,7 @@
 /def -i -mregexp -t'^\\| Polymorph spawn    * \\| ([0-9]*)min and ([0-9]*)s  *\\|$' spawn_time1 = /spawn_time_update_min_sec %P1 %P2
 /def -i -mregexp -t'^\\| Polymorph spawn    * \\| ([0-9]*)min  *\\|$' spawn_time2 = /spawn_time_update_min_sec %P1 0
 
-/def -i -F -aBCBlue -t'The pain increases as your body starts to push out organs and limbs that should not be there.' spawn_up1 = @@grep "Polymorph spawn" show effects%;/trigger SPAWN_UP
-/def -i -F -aBCBlue -t'You force yourself deeper into the chaos frenzy!' spawn_up2 = @@grep "Polymorph spawn" show effects%;/trigger SPAWN_RELOAD
+/def -i -F -aBCBlue -t'The pain increases as your body starts to push out organs and limbs that should not be there.' spawn_up1 = @grep "Polymorph spawn" show effects%;/trigger SPAWN_UP
+/def -i -F -aBCBlue -t'You force yourself deeper into the chaos frenzy!' spawn_up2 = @grep "Polymorph spawn" show effects%;/trigger SPAWN_RELOAD
 /def -i -F -aBCbgred,Cwhite -t'The extra organs retract back into your body.' spawn_dropped = /spawn_time_update 0%;/trigger SPAWN_DOWN
 

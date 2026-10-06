@@ -1,4 +1,19 @@
 
+
+/set hilight_count=0
+/def -i hilight = \
+    /let color=-aBCRed%;\
+    /if ({1} =/ '-a*') \
+        /test color := {1}%;\
+        /shift%;\
+    /endif%;\
+    /set hilight_count=$[hilight_count+1]%;\
+    /def %{color} -F -t'*%{*}*' hilight_%{hilight_count}
+
+;/def -i hilite = /hilight %{*}
+/def -i highlite = /hilight %{*}
+/def -i highlight = /hilight %{*}
+
 /def -i -F -t"Moving to starting location." bat_startup = /trigger BAT_STARTUP
 /def -i -F -t'*Armageddon has arrived to church*' bat_shutdown = /trigger BAT_SHUTDOWN
 /def -i -F -t'You die.' death1 = /trigger DEATH
@@ -88,4 +103,5 @@
 
 /def -i -F -arBCRed -t'Robin Hood arrives from the shadows, as merrily as ever.' robin_hood
 /def -i -F -arBCRed -t'You hear a loud snap as the walls separating the different planes of existance break down*' clone_lite
+
 

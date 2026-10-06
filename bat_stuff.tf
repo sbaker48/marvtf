@@ -12,3 +12,8 @@
 /def -i -F -t'* <green glow>' glow_fw_prot = /substitute -p %* @{Cyellow}[FW]@{n} @{Cblue}[PROT]@{n}
 /def -i -F -t'* <white glow>' glow_r_fw_prot = /substitute -p %* @{Cyellow}[FW]@{n} @{Cblue}[PROT]@{n}
 
+/def -i -F -aBCbgred,Cwhite -t'Your disc wavers dangerously.' discdrop0
+/def -i -F -aBCbgred,Cwhite -t'Your floating disc suddenly disappears.' discdrop1
+/def -i -F -aBCbgred,Cwhite -t'You feel the bond to your floating disc disappear.' discdrop2
+
+/def -i -F -aBCbgmagenta,Cyellow -t'You\'ve been ambushed!' ambush0
